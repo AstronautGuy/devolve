@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { type WebhookEvent } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { organizations } from "~/server/db/schema";
+import { organizations, tasks } from "~/server/db/schema"; // <--- IMPORT TASKS
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
@@ -43,12 +43,22 @@ export async function POST(req: Request) {
   if (eventType === "organization.created") {
     const { id, name } = evt.data as { id: string; name: string };
 
+    // 1. Sync Organization
     await db.insert(organizations).values({
       id: id,
       name: name,
     });
 
-    console.log(`Synced New Org: ${name} (${id})`);
+    // 2. Create Onboarding Task (THIS WAS MISSING)
+    await db.insert(tasks).values({
+      orgId: id,
+      title: "Action Required: Complete Setup",
+      description: "Please update your company settings to unlock all features.",
+      link: "/onboarding",
+      isCompleted: false,
+    });
+
+    console.log(`Synced New Org & Created Task: ${name} (${id})`);
   }
 
   // B. Organization Updated (e.g. Renamed in Clerk)
@@ -68,6 +78,7 @@ export async function POST(req: Request) {
 
     if (id) {
       await db.delete(organizations).where(eq(organizations.id, id));
+      // Note: Tasks will remain unless you delete them too, or use Foreign Keys
       console.log(`Deleted Org: ${id}`);
     }
   }

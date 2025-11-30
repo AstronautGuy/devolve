@@ -9,6 +9,7 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import { House } from "lucide-react";
+import { TaskAlert } from "~/app/_components/TaskAlert";
 
 export function Header() {
   return (
@@ -28,6 +29,7 @@ export function Header() {
 
       {/* When logged in */}
       <SignedIn>
+        <TaskAlert/>
         <Link
           href="/my-organization"
           className="flex h-10 items-center justify-center rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base"
