@@ -32,18 +32,35 @@ import { Loader2 } from "lucide-react";
 
 // 1. Define Zod Schema
 const onboardingSchema = z.object({
-  address: z.string().min(5, {
-    message: "Address must be at least 5 characters.",
-  }),
-  gstId: z.string().min(2, {
-    message: "GST/Tax ID is required.",
-  }),
-  industry: z.string().min(1, {
-    message: "Please select an industry.",
-  }),
-  staff: z.string().min(1, {
-    message: "Please select a staff size range.",
-  }),
+  address: z
+    .string()
+    .trim()
+    .min(10, "Address must be more descriptive.")
+    .max(200, "Address is too long.")
+    .regex(/[a-zA-Z]/, "Address cannot be only numbers or symbols.")
+    .regex(/\d/, "Address must include a building or house number.")
+    .regex(/[a-zA-Z]{3,}/, "Address must contain a locality or area name."),
+
+  gstId: z
+    .string()
+    .trim()
+    .toUpperCase()
+    .regex(
+      /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
+      "Enter a valid GST number (15 characters, proper format)."
+    ),
+
+  industry: z
+    .string()
+    .min(1, "Please select an industry."),
+
+  staff: z
+    .string()
+    .min(1, "Please select a staff size.")
+    .refine(
+      (v) => ["1-10", "11-50", "51-200", "200+"].includes(v),
+      "Invalid staff size range."
+    ),
 });
 
 // Explicitly export the type for reuse
