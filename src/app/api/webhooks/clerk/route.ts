@@ -2,7 +2,7 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { type WebhookEvent } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { organizations, tasks, companyProfiles } from "~/server/db/schema"; // <--- Added companyProfiles
+import { organizations, tasks, companyProfiles, staff } from "~/server/db/schema"; // <--- Added companyProfiles
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
 
@@ -84,7 +84,10 @@ export async function POST(req: Request) {
       // 2. Delete Company Profile linked to this Org
       await db.delete(companyProfiles).where(eq(companyProfiles.orgId, id));
 
-      // 3. Finally, delete the Organization itself
+      // 3. Delete Staff linked to this org
+      await db.delete(staff).where(eq(staff.orgId, id));
+
+      // 4. Finally, delete the Organization itself
       await db.delete(organizations).where(eq(organizations.id, id));
 
       console.log(`Deleted Org and all associated data: ${id}`);

@@ -6,7 +6,7 @@ import {
   varchar,
   uuid,
   text,
-  boolean
+  boolean,
 } from "drizzle-orm/pg-core";
 /**
  * Use the same database instance for multiple projects.
@@ -15,20 +15,17 @@ import {
 export const createTable = pgTableCreator((name) => `devolve_${name}`);
 
 // --- ORGANIZATION TABLE ---
-export const organizations = createTable(
-  "organization",
-  {
-    // 1. Clerk ID (Primary Key)
-    id: varchar("id", { length: 255 }).primaryKey(),
+export const organizations = createTable("organization", {
+  // 1. Clerk ID (Primary Key)
+  id: varchar("id", { length: 255 }).primaryKey(),
 
-    // 2. Organization Name (Added back)
-    name: varchar("name", { length: 256 }).notNull(),
+  // 2. Organization Name (Added back)
+  name: varchar("name", { length: 256 }).notNull(),
 
-    createdAt: timestamp("created_at")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .notNull(),
-  }
-);
+  createdAt: timestamp("created_at")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+});
 
 export const tasks = createTable(
   "task",
@@ -56,7 +53,7 @@ export const tasks = createTable(
   (table) => ({
     // Create an index on orgId for fast dashboard loading
     orgIdx: index("task_org_idx").on(table.orgId),
-  })
+  }),
 );
 
 export const companyProfiles = createTable(
@@ -69,12 +66,38 @@ export const companyProfiles = createTable(
     address: text("address"),
     gstId: varchar("tax_id", { length: 50 }),
     industry: varchar("industry", { length: 100 }),
-    staff: varchar("staff",{length: 100}),
+    staff: varchar("staff", { length: 100 }),
+
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    orgIdx: index("profile_org_idx").on(table.orgId),
+  }),
+);
+
+export const staff = createTable(
+  "staff",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    orgId: varchar("org_id", { length: 255 }).notNull(),
+
+    // Basic Info
+    name: varchar("name", { length: 256 }).notNull(),
+    email: varchar("email", { length: 256 }).notNull(),
+    role: varchar("role", { length: 50 }).default("Employee").notNull(), // Admin, Manager, Employee
+
+    // HR Details
+    phone: varchar("phone", { length: 20 }),
+    status: varchar("status", { length: 20 }).default("Active"), // Active, On Leave, Terminated
 
     createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
     updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
   },
   (table) => ({
-    orgIdx: index("profile_org_idx").on(table.orgId),
+    orgIdx: index("staff_org_idx").on(table.orgId),
+    emailIdx: index("staff_email_idx").on(table.email),
   })
 );
