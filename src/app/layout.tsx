@@ -8,7 +8,7 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import "../styles/globals.css";
 
-import { Header } from "~/app/_components/header";
+import { Header } from "~/components/Header";
 import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {

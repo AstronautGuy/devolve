@@ -9,12 +9,12 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import { House } from "lucide-react";
-import { TaskAlert } from "~/app/_components/TaskAlert";
+import { TaskAlert } from "~/components/TaskAlert";
 
 export function Header() {
   return (
     <header className="flex h-16 items-center justify-end gap-4 p-4">
-      <Link href={"/"}>
+      <Link href={"/public"}>
         <House />
       </Link>
       {/* When NOT logged in */}
