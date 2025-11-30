@@ -8,17 +8,19 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import Link from "next/link";
+import { House } from "lucide-react";
 
 export function Header() {
   return (
-    <header className="flex justify-end items-center p-4 gap-4 h-16">
+    <header className="flex h-16 items-center justify-end gap-4 p-4">
+      <Link href={"/"}>
+        <House />
+      </Link>
       {/* When NOT logged in */}
       <SignedOut>
         <SignInButton />
         <SignUpButton>
-          <button
-            className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer"
-          >
+          <button className="h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base">
             Sign Up
           </button>
         </SignUpButton>
@@ -28,11 +30,10 @@ export function Header() {
       <SignedIn>
         <Link
           href="/my-organization"
-          className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 flex items-center justify-center"
+          className="flex h-10 items-center justify-center rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base"
         >
           My Organization
         </Link>
-
         <UserButton />
       </SignedIn>
     </header>

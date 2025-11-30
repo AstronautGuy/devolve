@@ -5,8 +5,8 @@ import { Geist } from "next/font/google";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
-import { ClerkProvider } from '@clerk/nextjs'
-import '../styles/globals.css'
+import { ClerkProvider } from "@clerk/nextjs";
+import "../styles/globals.css";
 import { Header } from "~/app/_components/header";
 
 export const metadata: Metadata = {
@@ -25,14 +25,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <ClerkProvider>
-    <html lang="en" className={`${geist.variable}`}>
-      <body>
-        <TRPCReactProvider>
-          <Header/>
-          {children}
-        </TRPCReactProvider>
-      </body>
-    </html>
+      <html lang="en" className={`${geist.variable}`}>
+        <body>
+          <TRPCReactProvider>
+            <Header />
+            {children}
+          </TRPCReactProvider>
+        </body>
+      </html>
     </ClerkProvider>
   );
 }
