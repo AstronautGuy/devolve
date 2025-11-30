@@ -1,23 +1,38 @@
+"use client";
+
 import {
   SignInButton,
   SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
-} from '@clerk/nextjs'
+} from "@clerk/nextjs";
+import Link from "next/link";
 
 export function Header() {
-  return(
+  return (
     <header className="flex justify-end items-center p-4 gap-4 h-16">
+      {/* When NOT logged in */}
       <SignedOut>
         <SignInButton />
         <SignUpButton>
-          <button className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer">
+          <button
+            className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 cursor-pointer"
+          >
             Sign Up
           </button>
         </SignUpButton>
       </SignedOut>
+
+      {/* When logged in */}
       <SignedIn>
+        <Link
+          href="/my-organization"
+          className="bg-[#6c47ff] text-white rounded-full font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 flex items-center justify-center"
+        >
+          My Organization
+        </Link>
+
         <UserButton />
       </SignedIn>
     </header>
