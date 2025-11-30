@@ -2,12 +2,13 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { type WebhookEvent } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { organizations, tasks } from "~/server/db/schema"; // <--- IMPORT TASKS
+import { organizations, tasks, companyProfiles } from "~/server/db/schema"; // <--- Added companyProfiles
 import { eq } from "drizzle-orm";
+import { env } from "~/env";
 
 export async function POST(req: Request) {
-  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
-  if (!WEBHOOK_SECRET) throw new Error("Missing CLERK_WEBHOOK_SECRET");
+  // Use the validated env object
+  const WEBHOOK_SECRET = env.CLERK_WEBHOOK_SECRET;
 
   // 1. Verify Headers
   const headerPayload = await headers();
@@ -49,7 +50,7 @@ export async function POST(req: Request) {
       name: name,
     });
 
-    // 2. Create Onboarding Task (THIS WAS MISSING)
+    // 2. Create Onboarding Task
     await db.insert(tasks).values({
       orgId: id,
       title: "Action Required: Complete Setup",
@@ -77,9 +78,16 @@ export async function POST(req: Request) {
     const { id } = evt.data as { id: string };
 
     if (id) {
+      // 1. Delete Tasks linked to this Org
+      await db.delete(tasks).where(eq(tasks.orgId, id));
+
+      // 2. Delete Company Profile linked to this Org
+      await db.delete(companyProfiles).where(eq(companyProfiles.orgId, id));
+
+      // 3. Finally, delete the Organization itself
       await db.delete(organizations).where(eq(organizations.id, id));
-      // Note: Tasks will remain unless you delete them too, or use Foreign Keys
-      console.log(`Deleted Org: ${id}`);
+
+      console.log(`Deleted Org and all associated data: ${id}`);
     }
   }
 

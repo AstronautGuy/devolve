@@ -7,7 +7,9 @@ import { TRPCReactProvider } from "~/trpc/react";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import "../styles/globals.css";
+
 import { Header } from "~/app/_components/header";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata: Metadata = {
   title: "Create T3 App",
@@ -30,6 +32,7 @@ export default function RootLayout({
           <TRPCReactProvider>
             <Header />
             {children}
+            <Toaster />
           </TRPCReactProvider>
         </body>
       </html>

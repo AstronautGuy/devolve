@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
@@ -22,29 +22,47 @@ export function TaskAlert() {
   // Fetch the pending task
   const { data: task, isLoading } = api.task.getPending.useQuery();
 
+  // Ref to prevent double-firing in Strict Mode
+  const hasToasted = useRef(false);
+
   const hasUnread = !!task;
 
   // Add Toast Effect: Pop up when a task is found
   useEffect(() => {
-    if (task) {
-      toast(task.title, {
-        description: task.description,
-        action: task.link ? {
-          label: "Action",
-          onClick: () => router.push(task.link!),
-        } : undefined,
-      });
+    if (task && !hasToasted.current) {
+      hasToasted.current = true; // Mark as shown
+
+      // Small timeout ensures UI is ready
+      setTimeout(() => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+        toast.info(task.title, {
+          description: task.description,
+          descriptionClassName: "text-black",
+          duration: 8000, // Stay longer
+          icon: <AlertCircle className="h-5 w-5 text-blue-500" />,
+          action: task.link
+            ? {
+              label: (
+                <span className="inline-flex items-center gap-1">
+                View Details <ExternalLink className="h-3 w-3" />
+                </span>
+              ),
+                onClick: () => router.push(task.link!),
+              }
+            : undefined,
+        });
+      }, 500);
     }
   }, [task, router]);
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative text-slate-500 hover:text-slate-700">
-          <Bell className="h-5 w-5" />
+        <Button variant="ghost" size="icon" className="relative h-12 w-12 text-slate-500 hover:text-slate-700 hover:bg-slate-100">
+          <Bell className="h-10 w-10" />
           {/* Red Dot Indicator */}
           {hasUnread && (
-            <span className="absolute right-2 top-2 h-2.5 w-2.5 rounded-full border-2 border-white bg-red-600" />
+            <span className="absolute right-3 top-3 h-3 w-3 rounded-full border-2 border-white bg-red-600 shadow-sm" />
           )}
           <span className="sr-only">Notifications</span>
         </Button>
@@ -52,7 +70,7 @@ export function TaskAlert() {
 
       <SheetContent>
         <SheetHeader className="mb-6">
-          <SheetTitle>Notifications</SheetTitle>
+          <SheetTitle className="text-xl">Notifications</SheetTitle>
           <SheetDescription>
             You have {hasUnread ? "1" : "0"} unread task requiring attention.
           </SheetDescription>
@@ -65,35 +83,35 @@ export function TaskAlert() {
               Checking for tasks...
             </div>
           ) : !task ? (
-            <div className="flex flex-col items-center justify-center gap-2 py-10 text-center text-slate-500">
-              <Bell className="h-10 w-10 opacity-20" />
-              <p>All caught up!</p>
+            <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-slate-500 opacity-60">
+              <Bell className="h-12 w-12" />
+              <p className="font-medium">All caught up!</p>
               <p className="text-xs">No pending tasks found.</p>
             </div>
           ) : (
             // Notification Card
-            <div className="relative rounded-lg border border-slate-200 bg-white p-4 shadow-sm transition-all hover:shadow-md">
-              <div className="mb-2 flex items-start justify-between gap-3">
-                <div className="flex gap-3">
-                  <div className="mt-0.5 rounded-full bg-blue-100 p-2 text-blue-600">
-                    <AlertCircle className="h-4 w-4" />
+            <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:border-blue-200 group">
+              <div className="mb-3 flex items-start justify-between gap-4">
+                <div className="flex gap-4">
+                  <div className="mt-1 rounded-full bg-blue-50 p-2.5 text-blue-600 group-hover:bg-blue-100 transition-colors">
+                    <AlertCircle className="h-5 w-5" />
                   </div>
                   <div>
                     <h4 className="font-semibold text-slate-900">{task.title}</h4>
-                    <p className="text-sm text-slate-600">{task.description}</p>
+                    <p className="mt-1 text-sm text-slate-600 leading-relaxed">{task.description}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="mt-4 flex items-center justify-end">
-                {task.link && (
-                  <Link href={task.link} className="w-full">
-                    <Button variant="outline" size="sm" className="w-full text-xs">
-                      View Details <ExternalLink className="ml-2 h-3 w-3" />
+              {task.link && (
+                <div className="mt-4 flex justify-end">
+                  <Link href={task.link} className="w-full sm:w-auto">
+                    <Button variant="outline" size="sm" className="w-full gap-2 text-xs font-medium">
+                      View Details <ExternalLink className="h-3 w-3" />
                     </Button>
                   </Link>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           )}
         </div>
