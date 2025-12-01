@@ -8,9 +8,9 @@ import {
   Briefcase,
   Package,
   Settings,
-  ArrowRight,
   ShieldAlert
 } from "lucide-react";
+import { ModuleCard } from "~/components/ModuleCard";
 
 export default function DashboardPage() {
   const { organization, isLoaded: orgLoaded } = useOrganization();
@@ -36,7 +36,7 @@ export default function DashboardPage() {
     {
       title: "Staff Management",
       description: "Manage employees, roles, and permissions.",
-      href: "/dashboard/staff",
+      href: "/my-organization/staff",
       icon: Users,
       color: "bg-blue-500/20 text-blue-300",
       border: "hover:border-blue-500/50",
@@ -44,7 +44,7 @@ export default function DashboardPage() {
     {
       title: "Invoices",
       description: "Create, track, and send invoices to clients.",
-      href: "/dashboard/invoices",
+      href: "/my-organization/invoices",
       icon: FileText,
       color: "bg-green-500/20 text-green-300",
       border: "hover:border-green-500/50",
@@ -52,7 +52,7 @@ export default function DashboardPage() {
     {
       title: "Clients (CRM)",
       description: "Manage leads and customer relationships.",
-      href: "/dashboard/clients",
+      href: "/my-organization/clients",
       icon: Briefcase,
       color: "bg-purple-500/20 text-purple-300",
       border: "hover:border-purple-500/50",
@@ -60,7 +60,7 @@ export default function DashboardPage() {
     {
       title: "Inventory",
       description: "Track products, stock levels, and SKUs.",
-      href: "/dashboard/inventory",
+      href: "/my-organization/inventory",
       icon: Package,
       color: "bg-orange-500/20 text-orange-300",
       border: "hover:border-orange-500/50",
@@ -94,61 +94,46 @@ export default function DashboardPage() {
           </div>
         </div>
 
+
+
         {/* Right: Actions */}
         {isAdmin && (
           <Link
-            href="/dashboard/settings"
+            href="/my-organization/manage"
             className="group flex items-center gap-3 rounded-xl bg-white/10 px-5 py-3 font-medium transition-all hover:bg-white/20 hover:scale-105 active:scale-95 backdrop-blur-sm"
           >
             <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
             <span>Manage Organization</span>
           </Link>
         )}
-
       </div>
-      <h1 className={"font-light opacity-75 italic"}>all cards visible to all users as manage access is yet under development</h1>
+
       {/* --- MODULES GRID --- */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
         {modules.map((item) => (
-          <Link
+          <ModuleCard
             key={item.title}
+            title={item.title}
+            description={item.description}
             href={item.href}
-            className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-white/5 bg-white/5 p-6 transition-all duration-300 hover:bg-white/10 hover:shadow-2xl hover:-translate-y-1 ${item.border}`}
-          >
-            <div>
-              <div className={`mb-4 inline-flex rounded-xl p-3 ${item.color}`}>
-                <item.icon className="h-8 w-8" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold text-white group-hover:text-white/90">
-                {item.title}
-              </h3>
-              <p className="text-sm text-gray-400 group-hover:text-gray-300">
-                {item.description}
-              </p>
-            </div>
-
-            <div className="mt-6 flex items-center text-sm font-medium text-white/50 transition-colors group-hover:text-white">
-              Open Module <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </div>
-          </Link>
+            icon={item.icon}
+            iconColorClass={item.color}
+            hoverBorderClass={item.border}
+          />
         ))}
 
         {/* Admin Only Extra Card (Audit Logs, etc) */}
         {isAdmin && (
-          <Link
-            href="/dashboard/security"
-            className="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-red-500/20 bg-red-500/5 p-6 transition-all duration-300 hover:bg-red-500/10 hover:border-red-500/40 hover:-translate-y-1"
-          >
-            <div>
-              <div className="mb-4 inline-flex rounded-xl p-3 bg-red-500/20 text-red-400">
-                <ShieldAlert className="h-8 w-8" />
-              </div>
-              <h3 className="mb-2 text-xl font-bold text-red-100">Security Center</h3>
-              <p className="text-sm text-red-200/60">
-                View audit logs, manage API keys, and system alerts.
-              </p>
-            </div>
-          </Link>
+          <ModuleCard
+            title="Security Center"
+            description="View audit logs, manage API keys, and system alerts."
+            href="/my-organization/security"
+            icon={ShieldAlert}
+            // Override styles for the Security Card
+            iconColorClass="bg-red-500/20 text-red-400"
+            hoverBorderClass="hover:border-red-500/40"
+            className="border-red-500/20 bg-red-500/5 hover:bg-red-500/10"
+          />
         )}
       </div>
 
