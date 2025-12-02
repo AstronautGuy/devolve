@@ -8,7 +8,7 @@ import {
   Briefcase,
   Package,
   Settings,
-  ShieldAlert
+  ShieldAlert,
 } from "lucide-react";
 import { ModuleCard } from "~/components/ModuleCard";
 
@@ -26,8 +26,13 @@ export default function DashboardPage() {
     );
   }
 
-  if (!user) return <div className="text-white p-10">No User found.</div>;
-  if (!organization) return <div className="text-white p-10">No organization found. Create one in Clerk.</div>;
+  if (!user) return <div className="p-10 text-white">No User found.</div>;
+  if (!organization)
+    return (
+      <div className="p-10 text-white">
+        No organization found. Create one in Clerk.
+      </div>
+    );
 
   const isAdmin = has({ role: "org:admin" });
 
@@ -68,8 +73,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] p-4 md:p-8 text-white">
-
+    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] p-4 text-white md:p-8">
       {/* --- HEADER SECTION --- */}
       <div className="mb-12 flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-start md:justify-between">
         {/* Left: Org Info */}
@@ -78,29 +82,29 @@ export default function DashboardPage() {
             <img
               src={organization.imageUrl}
               alt={organization.name}
-              className="h-20 w-20 rounded-2xl object-cover shadow-2xl border-2 border-white/10"
+              className="h-20 w-20 rounded-2xl border-2 border-white/10 object-cover shadow-2xl"
             />
             {isAdmin && (
-              <span className="absolute -bottom-2 -right-2 bg-yellow-500 text-black text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg">
+              <span className="absolute -right-2 -bottom-2 rounded-full bg-yellow-500 px-2 py-0.5 text-[10px] font-bold text-black shadow-lg">
                 ADMIN
               </span>
             )}
           </div>
           <div>
-            <h1 className="text-lg font-medium text-gray-400">{organization.name}</h1>
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+            <h1 className="text-lg font-medium text-gray-400">
+              {organization.name}
+            </h1>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
               Hello, {user.firstName}
             </h2>
           </div>
         </div>
 
-
-
         {/* Right: Actions */}
         {isAdmin && (
           <Link
             href="/my-organization/manage"
-            className="group flex items-center gap-3 rounded-xl bg-white/10 px-5 py-3 font-medium transition-all hover:bg-white/20 hover:scale-105 active:scale-95 backdrop-blur-sm"
+            className="group flex items-center gap-3 rounded-xl bg-white/10 px-5 py-3 font-medium backdrop-blur-sm transition-all hover:scale-105 hover:bg-white/20 active:scale-95"
           >
             <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
             <span>Manage Organization</span>
@@ -136,7 +140,6 @@ export default function DashboardPage() {
           />
         )}
       </div>
-
     </main>
   );
 }

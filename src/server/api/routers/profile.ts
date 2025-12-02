@@ -4,7 +4,6 @@ import { companyProfiles, tasks } from "~/server/db/schema";
 import { eq, and } from "drizzle-orm";
 
 export const profileRouter = createTRPCRouter({
-
   // 1. Get Profile
   get: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.companyProfiles.findFirst({
@@ -14,12 +13,14 @@ export const profileRouter = createTRPCRouter({
 
   // 2. Update Profile (Upsert)
   update: protectedProcedure
-    .input(z.object({
-      address: z.string().min(3, "Address is too short"),
-      gstId: z.string().optional(),
-      industry: z.string().optional(),
-      staff: z.string().optional(),
-    }))
+    .input(
+      z.object({
+        address: z.string().min(3, "Address is too short"),
+        gstId: z.string().optional(),
+        industry: z.string().optional(),
+        staff: z.string().optional(),
+      }),
+    )
     .mutation(async ({ ctx, input }) => {
       // A. Save the Profile Data
       const existing = await ctx.db.query.companyProfiles.findFirst({
@@ -27,12 +28,13 @@ export const profileRouter = createTRPCRouter({
       });
 
       if (existing) {
-        await ctx.db.update(companyProfiles)
+        await ctx.db
+          .update(companyProfiles)
           .set({
             address: input.address,
-            gstId: input.gstId,     // Drizzle maps this to 'tax_id' column
+            gstId: input.gstId, // Drizzle maps this to 'tax_id' column
             industry: input.industry,
-            staff: input.staff
+            staff: input.staff,
           })
           .where(eq(companyProfiles.orgId, ctx.auth.orgId));
       } else {
@@ -52,8 +54,8 @@ export const profileRouter = createTRPCRouter({
         .where(
           and(
             eq(tasks.orgId, ctx.auth.orgId),
-            eq(tasks.title, "Action Required: Complete Setup") // Matches Webhook Title
-          )
+            eq(tasks.title, "Action Required: Complete Setup"), // Matches Webhook Title
+          ),
         );
 
       return { success: true };

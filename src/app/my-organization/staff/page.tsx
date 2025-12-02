@@ -14,7 +14,7 @@ import {
   Mail,
   Phone,
   Shield,
-  Edit
+  Edit,
 } from "lucide-react";
 
 // UI Components
@@ -93,7 +93,7 @@ const staffSchema = z.object({
     .transform((val) => (val ? val.replace(/[\s-]/g, "") : val))
     .refine(
       (val) => !val || indianPhoneRegex.test(val),
-      "Enter a valid Indian mobile number"
+      "Enter a valid Indian mobile number",
     ),
 
   // FIX: Removed .default("Active") here to align Input/Output types for RHF
@@ -106,18 +106,25 @@ type StaffFormValues = z.infer<typeof staffSchema>;
 
 // Helper for status colors
 const getStatusColor = (status: string) => {
-  switch(status) {
-    case 'Active': return 'bg-green-50 text-green-700 ring-green-600/20';
-    case 'Inactive': return 'bg-slate-50 text-slate-700 ring-slate-600/20';
-    case 'On Leave': return 'bg-amber-50 text-amber-700 ring-amber-600/20';
-    case 'Terminated': return 'bg-red-50 text-red-700 ring-red-600/20';
-    default: return 'bg-slate-50 text-slate-700 ring-slate-600/20';
+  switch (status) {
+    case "Active":
+      return "bg-green-50 text-green-700 ring-green-600/20";
+    case "Inactive":
+      return "bg-slate-50 text-slate-700 ring-slate-600/20";
+    case "On Leave":
+      return "bg-amber-50 text-amber-700 ring-amber-600/20";
+    case "Terminated":
+      return "bg-red-50 text-red-700 ring-red-600/20";
+    default:
+      return "bg-slate-50 text-slate-700 ring-slate-600/20";
   }
 };
 
 export default function StaffPage() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingStaff, setEditingStaff] = useState<StaffFormValues | null>(null);
+  const [editingStaff, setEditingStaff] = useState<StaffFormValues | null>(
+    null,
+  );
 
   const utils = api.useUtils();
 
@@ -197,12 +204,12 @@ export default function StaffPage() {
       updateMutation.mutate({
         ...values,
         id: values.id,
-        phone: values.phone ?? undefined
+        phone: values.phone ?? undefined,
       });
     } else {
       createMutation.mutate({
         ...values,
-        phone: values.phone ?? undefined
+        phone: values.phone ?? undefined,
       });
     }
   };
@@ -213,13 +220,16 @@ export default function StaffPage() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-
+    <div className="space-y-6 p-6">
       {/* HEADER */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Staff Management</h1>
-          <p className="text-slate-500 mt-1">Manage your team members and permissions.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+            Staff Management
+          </h1>
+          <p className="mt-1 text-slate-500">
+            Manage your team members and permissions.
+          </p>
         </div>
 
         <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
@@ -230,14 +240,21 @@ export default function StaffPage() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>{editingStaff ? "Edit Team Member" : "Add New Team Member"}</DialogTitle>
+              <DialogTitle>
+                {editingStaff ? "Edit Team Member" : "Add New Team Member"}
+              </DialogTitle>
               <DialogDescription>
-                {editingStaff ? "Update details for this employee." : "Send an invite to a new employee."}
+                {editingStaff
+                  ? "Update details for this employee."
+                  : "Send an invite to a new employee."}
               </DialogDescription>
             </DialogHeader>
 
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-4">
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4 py-4"
+              >
                 <FormField
                   control={form.control}
                   name="name"
@@ -272,7 +289,10 @@ export default function StaffPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Role</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select role" />
@@ -294,7 +314,10 @@ export default function StaffPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Status</FormLabel>
-                        <Select onValueChange={field.onChange} value={field.value}>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder="Select status" />
@@ -304,7 +327,9 @@ export default function StaffPage() {
                             <SelectItem value="Active">Active</SelectItem>
                             <SelectItem value="Inactive">Inactive</SelectItem>
                             <SelectItem value="On Leave">On Leave</SelectItem>
-                            <SelectItem value="Terminated">Terminated</SelectItem>
+                            <SelectItem value="Terminated">
+                              Terminated
+                            </SelectItem>
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -320,7 +345,11 @@ export default function StaffPage() {
                     <FormItem>
                       <FormLabel>Phone (Optional)</FormLabel>
                       <FormControl>
-                        <Input placeholder="+1 234..." {...field} value={field.value ?? ""} />
+                        <Input
+                          placeholder="+1 234..."
+                          {...field}
+                          value={field.value ?? ""}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -328,8 +357,17 @@ export default function StaffPage() {
                 />
 
                 <div className="flex justify-end pt-4">
-                  <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-                    {createMutation.isPending || updateMutation.isPending ? "Saving..." : (editingStaff ? "Update Member" : "Add Member")}
+                  <Button
+                    type="submit"
+                    disabled={
+                      createMutation.isPending || updateMutation.isPending
+                    }
+                  >
+                    {createMutation.isPending || updateMutation.isPending
+                      ? "Saving..."
+                      : editingStaff
+                        ? "Update Member"
+                        : "Add Member"}
                   </Button>
                 </div>
               </form>
@@ -339,11 +377,11 @@ export default function StaffPage() {
       </div>
 
       {/* SEARCH & FILTER */}
-      <div className="flex items-center space-x-2 bg-white p-2 rounded-lg border w-fit">
+      <div className="flex w-fit items-center space-x-2 rounded-lg border bg-white p-2">
         <Search className="h-4 w-4 text-slate-400" />
         <Input
           placeholder="Search employees..."
-          className="border-none h-8 w-64 focus-visible:ring-0"
+          className="h-8 w-64 border-none focus-visible:ring-0"
         />
       </div>
 
@@ -363,7 +401,7 @@ export default function StaffPage() {
             {isLoading ? (
               <TableRow>
                 <TableCell colSpan={5} className="h-24 text-center">
-                  <div className="flex justify-center items-center gap-2 text-slate-500">
+                  <div className="flex items-center justify-center gap-2 text-slate-500">
                     <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                     Loading team...
                   </div>
@@ -371,7 +409,10 @@ export default function StaffPage() {
               </TableRow>
             ) : staffList?.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="h-32 text-center text-slate-500">
+                <TableCell
+                  colSpan={5}
+                  className="h-32 text-center text-slate-500"
+                >
                   No staff members found. Add your first employee!
                 </TableCell>
               </TableRow>
@@ -380,14 +421,22 @@ export default function StaffPage() {
                 <TableRow key={staff.id} className="hover:bg-slate-50/50">
                   <TableCell className="font-medium">
                     <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-xs">
-                        {staff.name.substring(0,2).toUpperCase()}
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600">
+                        {staff.name.substring(0, 2).toUpperCase()}
                       </div>
                       {staff.name}
                     </div>
                   </TableCell>
                   <TableCell>
-                    <Badge variant={staff.role === 'Admin' ? 'default' : staff.role === 'Manager' ? 'secondary' : 'outline'}>
+                    <Badge
+                      variant={
+                        staff.role === "Admin"
+                          ? "default"
+                          : staff.role === "Manager"
+                            ? "secondary"
+                            : "outline"
+                      }
+                    >
                       {staff.role}
                     </Badge>
                   </TableCell>
@@ -397,15 +446,17 @@ export default function StaffPage() {
                         <Mail className="h-3 w-3" /> {staff.email}
                       </div>
                       {staff.phone && (
-                        <div className="flex items-center gap-1 mt-0.5">
+                        <div className="mt-0.5 flex items-center gap-1">
                           <Phone className="h-3 w-3" /> {staff.phone}
                         </div>
                       )}
                     </div>
                   </TableCell>
                   <TableCell>
-                    <span className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ring-1 ring-inset ${getStatusColor(staff.status ?? 'Active')}`}>
-                      {staff.status ?? 'Active'}
+                    <span
+                      className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(staff.status ?? "Active")}`}
+                    >
+                      {staff.status ?? "Active"}
                     </span>
                   </TableCell>
                   <TableCell className="text-right">
@@ -417,7 +468,11 @@ export default function StaffPage() {
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
                         {/* Safe Cast: We know the shape matches */}
-                        <DropdownMenuItem onClick={() => handleEdit(staff as unknown as StaffFormValues)}>
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleEdit(staff as unknown as StaffFormValues)
+                          }
+                        >
                           <Edit className="mr-2 h-4 w-4" /> Edit Details
                         </DropdownMenuItem>
                         <DropdownMenuItem className="text-slate-500">
@@ -425,7 +480,9 @@ export default function StaffPage() {
                         </DropdownMenuItem>
                         <DropdownMenuItem
                           className="text-red-600 focus:text-red-600"
-                          onClick={() => deleteMutation.mutate({ id: staff.id })}
+                          onClick={() =>
+                            deleteMutation.mutate({ id: staff.id })
+                          }
                         >
                           <Trash2 className="mr-2 h-4 w-4" /> Remove User
                         </DropdownMenuItem>

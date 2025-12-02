@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import {HydrateClient } from "~/trpc/server";
+import { HydrateClient } from "~/trpc/server";
 
 export default async function Home() {
   return (
@@ -35,8 +35,7 @@ export default async function Home() {
             </Link>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl text-white">
-            </p>
+            <p className="text-2xl text-white"></p>
           </div>
         </div>
       </main>

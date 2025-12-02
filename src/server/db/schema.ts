@@ -7,6 +7,8 @@ import {
   uuid,
   text,
   boolean,
+  integer,
+  decimal,
 } from "drizzle-orm/pg-core";
 /**
  * Use the same database instance for multiple projects.
@@ -93,11 +95,35 @@ export const staff = createTable(
     phone: varchar("phone", { length: 20 }),
     status: varchar("status", { length: 20 }).default("Active"), // Active, On Leave, Terminated
 
-    createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
     updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
   },
   (table) => ({
     orgIdx: index("staff_org_idx").on(table.orgId),
     emailIdx: index("staff_email_idx").on(table.email),
+  }),
+);
+
+export const products = createTable(
+  "product",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    orgId: varchar("org_id", { length: 255 }).notNull(),
+
+    name: varchar("name", { length: 256 }).notNull(),
+    sku: varchar("sku", { length: 100 }), // Stock Keeping Unit
+    category: varchar("category", { length: 100 }),
+
+    // Inventory Data
+    quantity: integer("quantity").default(0).notNull(),
+    price: decimal("price", { precision: 10, scale: 2 }).default("0.00").notNull(),
+
+    createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+    updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    orgIdx: index("product_org_idx").on(table.orgId),
   })
 );

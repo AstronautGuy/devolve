@@ -10,14 +10,13 @@ interface UnderConstructionProps {
 }
 
 export function UnderConstruction({
-                                    title = "Building Something Great",
-                                    description = "This feature is currently under active development. Our engineers are hard at work crafting this module.",
-                                    backLink = "/dashboard",
-                                    backLabel = "Back to Dashboard",
-                                  }: UnderConstructionProps) {
+  title = "Building Something Great",
+  description = "This feature is currently under active development. Our engineers are hard at work crafting this module.",
+  backLink = "/dashboard",
+  backLabel = "Back to Dashboard",
+}: UnderConstructionProps) {
   return (
     <div className="flex min-h-[80vh] flex-col items-center justify-center p-4 text-center">
-
       {/* Animation Container */}
       <div className="relative mb-8 h-40 w-40">
         {/* Pulsing Background Glow */}
@@ -29,19 +28,19 @@ export function UnderConstruction({
         </div>
 
         {/* Small Gear - Reverse Spin */}
-        <div className="absolute bottom-0 right-0 flex items-center justify-center">
+        <div className="absolute right-0 bottom-0 flex items-center justify-center">
           <Cog className="h-16 w-16 animate-[spin_6s_linear_infinite_reverse] text-blue-400" />
         </div>
 
         {/* Hammer Animation (Simple bounce/pulse overlap) */}
-        <div className="absolute -left-2 top-0 flex items-center justify-center">
+        <div className="absolute top-0 -left-2 flex items-center justify-center">
           <Hammer className="h-12 w-12 -rotate-45 animate-bounce text-purple-400" />
         </div>
       </div>
 
       {/* Text Content */}
       <div className="max-w-md space-y-4">
-        <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-300 ring-1 ring-inset ring-blue-500/20">
+        <div className="inline-flex items-center gap-2 rounded-full bg-blue-500/10 px-3 py-1 text-xs font-medium text-blue-300 ring-1 ring-blue-500/20 ring-inset">
           <Construction className="h-3 w-3" />
           <span>Work in Progress</span>
         </div>
@@ -50,13 +49,14 @@ export function UnderConstruction({
           {title}
         </h1>
 
-        <p className="text-lg text-slate-400">
-          {description}
-        </p>
+        <p className="text-lg text-slate-400">{description}</p>
 
         <div className="pt-8">
           <Link href={backLink}>
-            <Button variant="outline" className="gap-2 border-slate-700 bg-slate-900/50 text-slate-300 hover:bg-slate-800 hover:text-white">
+            <Button
+              variant="outline"
+              className="gap-2 border-slate-700 bg-slate-900/50 text-slate-300 hover:bg-slate-800 hover:text-white"
+            >
               <ArrowLeft className="h-4 w-4" />
               {backLabel}
             </Button>

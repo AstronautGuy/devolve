@@ -13,7 +13,6 @@ import { db } from "~/server/db";
  * These allow you to access things when processing a request, like the database, the session, etc.
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-
   // 2. Get the Auth Session using the new async auth() helper
   // This automatically uses the underlying Next.js headers/cookies context
   const session = await auth();

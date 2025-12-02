@@ -4,14 +4,13 @@ import { tasks } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
 export const taskRouter = createTRPCRouter({
-
   // 1. Get the most recent pending task for this Org
   getPending: protectedProcedure.query(async ({ ctx }) => {
     // We use 'findFirst' to just get one alert at a time
     const task = await ctx.db.query.tasks.findFirst({
       where: and(
         eq(tasks.orgId, ctx.auth.orgId), // Security: Locked to current Org
-        eq(tasks.isCompleted, false)     // Logic: Only incomplete tasks
+        eq(tasks.isCompleted, false), // Logic: Only incomplete tasks
       ),
       orderBy: (tasks, { desc }) => [desc(tasks.createdAt)],
     });
@@ -30,8 +29,8 @@ export const taskRouter = createTRPCRouter({
         .where(
           and(
             eq(tasks.id, input.taskId),
-            eq(tasks.orgId, ctx.auth.orgId) // Double Security: Ensure they own it
-          )
+            eq(tasks.orgId, ctx.auth.orgId), // Double Security: Ensure they own it
+          ),
         );
     }),
 });

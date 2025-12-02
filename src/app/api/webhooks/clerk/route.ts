@@ -2,7 +2,12 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { type WebhookEvent } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { organizations, tasks, companyProfiles, staff } from "~/server/db/schema"; // <--- Added companyProfiles
+import {
+  organizations,
+  tasks,
+  companyProfiles,
+  staff,
+} from "~/server/db/schema"; // <--- Added companyProfiles
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
 
@@ -54,7 +59,8 @@ export async function POST(req: Request) {
     await db.insert(tasks).values({
       orgId: id,
       title: "Action Required: Complete Setup",
-      description: "Please update your company settings to unlock all features.",
+      description:
+        "Please update your company settings to unlock all features.",
       link: "/onboarding",
       isCompleted: false,
     });
@@ -66,7 +72,8 @@ export async function POST(req: Request) {
   if (eventType === "organization.updated") {
     const { id, name } = evt.data as { id: string; name: string };
 
-    await db.update(organizations)
+    await db
+      .update(organizations)
       .set({ name: name })
       .where(eq(organizations.id, id));
 

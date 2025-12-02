@@ -15,19 +15,19 @@ interface ModuleCardProps {
 }
 
 export function ModuleCard({
-                             title,
-                             description,
-                             href,
-                             icon: Icon,
-                             iconColorClass,
-                             hoverBorderClass = "",
-                             // Default dark theme styles, can be overridden
-                             className = "border-white/5 bg-white/5 hover:bg-white/10",
-                           }: ModuleCardProps) {
+  title,
+  description,
+  href,
+  icon: Icon,
+  iconColorClass,
+  hoverBorderClass = "",
+  // Default dark theme styles, can be overridden
+  className = "border-white/5 bg-white/5 hover:bg-white/10",
+}: ModuleCardProps) {
   return (
     <Link
       href={href}
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1 ${className} ${hoverBorderClass}`}
+      className={`group relative flex flex-col justify-between overflow-hidden rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl ${className} ${hoverBorderClass}`}
     >
       <div>
         <div className={`mb-4 inline-flex rounded-xl p-3 ${iconColorClass}`}>

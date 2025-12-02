@@ -27,7 +27,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
 import { Loader2 } from "lucide-react";
 
 // 1. Define Zod Schema
@@ -47,19 +53,17 @@ const onboardingSchema = z.object({
     .toUpperCase()
     .regex(
       /^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/,
-      "Enter a valid GST number (15 characters, proper format)."
+      "Enter a valid GST number (15 characters, proper format).",
     ),
 
-  industry: z
-    .string()
-    .min(1, "Please select an industry."),
+  industry: z.string().min(1, "Please select an industry."),
 
   staff: z
     .string()
     .min(1, "Please select a staff size.")
     .refine(
       (v) => ["1-10", "11-50", "51-200", "200+"].includes(v),
-      "Invalid staff size range."
+      "Invalid staff size range.",
     ),
 });
 
@@ -113,13 +117,13 @@ export default function OnboardingPage() {
           </CardTitle>
           <CardDescription>
             {/* Safe check for organization name */}
-            Enter your business details for {organization?.name ?? "your organization"} to unlock full access.
+            Enter your business details for{" "}
+            {organization?.name ?? "your organization"} to unlock full access.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-
               <FormField
                 control={form.control}
                 name="address"
@@ -127,7 +131,10 @@ export default function OnboardingPage() {
                   <FormItem>
                     <FormLabel>Business Address</FormLabel>
                     <FormControl>
-                      <Input placeholder="123 Innovation Dr, Tech City" {...field} />
+                      <Input
+                        placeholder="123 Innovation Dr, Tech City"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,7 +165,10 @@ export default function OnboardingPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Industry</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select..." />
@@ -168,7 +178,9 @@ export default function OnboardingPage() {
                           <SelectItem value="technology">Technology</SelectItem>
                           <SelectItem value="retail">Retail</SelectItem>
                           <SelectItem value="healthcare">Healthcare</SelectItem>
-                          <SelectItem value="manufacturing">Manufacturing</SelectItem>
+                          <SelectItem value="manufacturing">
+                            Manufacturing
+                          </SelectItem>
                           <SelectItem value="services">Services</SelectItem>
                           <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
@@ -184,7 +196,10 @@ export default function OnboardingPage() {
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Team Size</FormLabel>
-                      <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select..." />
@@ -193,7 +208,9 @@ export default function OnboardingPage() {
                         <SelectContent>
                           <SelectItem value="1-10">1-10 Employees</SelectItem>
                           <SelectItem value="11-50">11-50 Employees</SelectItem>
-                          <SelectItem value="51-200">51-200 Employees</SelectItem>
+                          <SelectItem value="51-200">
+                            51-200 Employees
+                          </SelectItem>
                           <SelectItem value="201+">201+ Employees</SelectItem>
                         </SelectContent>
                       </Select>

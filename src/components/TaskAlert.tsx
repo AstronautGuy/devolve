@@ -42,11 +42,11 @@ export function TaskAlert() {
           icon: <AlertCircle className="h-5 w-5 text-blue-500" />,
           action: task.link
             ? {
-              label: (
-                <span className="inline-flex items-center gap-1">
-                View Details <ExternalLink className="h-3 w-3" />
-                </span>
-              ),
+                label: (
+                  <span className="inline-flex items-center gap-1">
+                    View Details <ExternalLink className="h-3 w-3" />
+                  </span>
+                ),
                 onClick: () => router.push(task.link!),
               }
             : undefined,
@@ -58,11 +58,15 @@ export function TaskAlert() {
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative h-12 w-12 text-slate-500 hover:text-slate-700 hover:bg-slate-100">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="relative h-12 w-12 text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+        >
           <Bell className="h-10 w-10" />
           {/* Red Dot Indicator */}
           {hasUnread && (
-            <span className="absolute right-3 top-3 h-3 w-3 rounded-full border-2 border-white bg-red-600 shadow-sm" />
+            <span className="absolute top-3 right-3 h-3 w-3 rounded-full border-2 border-white bg-red-600 shadow-sm" />
           )}
           <span className="sr-only">Notifications</span>
         </Button>
@@ -90,15 +94,19 @@ export function TaskAlert() {
             </div>
           ) : (
             // Notification Card
-            <div className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md hover:border-blue-200 group">
+            <div className="group relative overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:border-blue-200 hover:shadow-md">
               <div className="mb-3 flex items-start justify-between gap-4">
                 <div className="flex gap-4">
-                  <div className="mt-1 rounded-full bg-blue-50 p-2.5 text-blue-600 group-hover:bg-blue-100 transition-colors">
+                  <div className="mt-1 rounded-full bg-blue-50 p-2.5 text-blue-600 transition-colors group-hover:bg-blue-100">
                     <AlertCircle className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-slate-900">{task.title}</h4>
-                    <p className="mt-1 text-sm text-slate-600 leading-relaxed">{task.description}</p>
+                    <h4 className="font-semibold text-slate-900">
+                      {task.title}
+                    </h4>
+                    <p className="mt-1 text-sm leading-relaxed text-slate-600">
+                      {task.description}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -106,7 +114,11 @@ export function TaskAlert() {
               {task.link && (
                 <div className="mt-4 flex justify-end">
                   <Link href={task.link} className="w-full sm:w-auto">
-                    <Button variant="outline" size="sm" className="w-full gap-2 text-xs font-medium">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full gap-2 text-xs font-medium"
+                    >
                       View Details <ExternalLink className="h-3 w-3" />
                     </Button>
                   </Link>
