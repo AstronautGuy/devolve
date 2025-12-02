@@ -12,7 +12,7 @@ interface UnderConstructionProps {
 export function UnderConstruction({
   title = "Building Something Great",
   description = "This feature is currently under active development. Our engineers are hard at work crafting this module.",
-  backLink = "/dashboard",
+  backLink = "/my-organization",
   backLabel = "Back to Dashboard",
 }: UnderConstructionProps) {
   return (
