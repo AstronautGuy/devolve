@@ -53,8 +53,8 @@ export default function InventoryPage() {
     const query = searchQuery.toLowerCase();
     return (
       product.name.toLowerCase().includes(query) ||
-      (product.sku && product.sku.toLowerCase().includes(query)) ||
-      (product.category && product.category.toLowerCase().includes(query))
+      (product.sku?.toLowerCase().includes(query) ?? false) ||
+      (product.category?.toLowerCase().includes(query) ?? false)
     );
   });
 
@@ -295,6 +295,7 @@ export default function InventoryPage() {
                       <span className="text-xs text-slate-400">{item.category}</span>
                     </div>
                   </TableCell>
+                  {/* FIX: Use nullish coalescing (??) instead of logical OR (||) */}
                   <TableCell><span className="font-mono text-xs text-slate-600 bg-slate-100 px-2 py-1 rounded">{item.sku ?? "N/A"}</span></TableCell>
                   <TableCell>${item.price}</TableCell>
                   <TableCell>
