@@ -10,6 +10,7 @@ import "../styles/globals.css";
 
 import { Header } from "~/components/Header";
 import { Toaster } from "~/components/ui/sonner";
+import Navigation from "~/components/Navigation";
 
 export const metadata: Metadata = {
   title: "Create T3 App",

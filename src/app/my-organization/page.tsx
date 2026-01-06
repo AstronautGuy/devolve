@@ -39,6 +39,14 @@ export default function DashboardPage() {
   // Module Definitions
   const modules = [
     {
+      title: "Quotations",
+      description: "Propose and Approve quotations for clients",
+      href: "/my-organization/quotations",
+      icon: Users,
+      color: "bg-blue-500/20 text-blue-300",
+      border: "hover:border-blue-500/50",
+    },
+    {
       title: "Staff Management",
       description: "Manage employees, roles, and permissions.",
       href: "/my-organization/staff",
