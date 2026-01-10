@@ -1,11 +1,12 @@
 import Link from "next/link";
-import Image from "next/image";
 import { HydrateClient } from "~/trpc/server";
+import { Header } from "~/components/Header";
 
 export default async function Home() {
   return (
     <HydrateClient>
       <main className="relative min-h-screen bg-slate-950 text-white selection:bg-purple-500 selection:text-white">
+        <Header/>
 
         {/* Decorative Background Gradients */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -91,7 +92,7 @@ export default async function Home() {
 
         {/* Footer */}
         <footer className="border-t border-slate-800 bg-slate-950 py-10 text-center text-slate-500">
-          <p>© {new Date().getFullYear()} Devfinity. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Devolve. All rights reserved.</p>
         </footer>
 
       </main>
