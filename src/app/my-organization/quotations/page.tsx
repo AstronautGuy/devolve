@@ -31,9 +31,13 @@ export default function QuotationsPage() {
         </Breadcrumb>
         <h1 className={"my-4 text-4xl"}>Quotations</h1>
       </section>
-      <section className={"mt-2 flex flex-row items-center justify-between bg-white px-10"}>
+      <section
+        className={
+          "mt-2 flex flex-row items-center justify-between bg-white px-10"
+        }
+      >
         <h1 className={"my-4 text-4xl"}>Lifetime Data</h1>
-        <ChevronDown/>
+        <ChevronDown />
       </section>
     </main>
   );

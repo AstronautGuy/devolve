@@ -1,4 +1,4 @@
-  import { sql } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import {
   index,
   pgTableCreator,
@@ -118,12 +118,16 @@ export const products = createTable(
 
     // Inventory Data
     quantity: integer("quantity").default(0).notNull(),
-    price: decimal("price", { precision: 10, scale: 2 }).default("0.00").notNull(),
+    price: decimal("price", { precision: 10, scale: 2 })
+      .default("0.00")
+      .notNull(),
 
-    createdAt: timestamp("created_at").default(sql`CURRENT_TIMESTAMP`).notNull(),
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
     updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
   },
   (table) => ({
     orgIdx: index("product_org_idx").on(table.orgId),
-  })
+  }),
 );
