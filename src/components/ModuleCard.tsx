@@ -33,15 +33,11 @@ export function ModuleCard({
         <div className={`mb-4 inline-flex rounded-xl p-3 ${iconColorClass}`}>
           <Icon className="h-8 w-8" />
         </div>
-        <h3 className="mb-2 text-xl font-bold text-white group-hover:text-white/90">
-          {title}
-        </h3>
-        <p className="text-sm text-gray-400 group-hover:text-gray-300">
-          {description}
-        </p>
+        <h3 className="mb-2 text-xl font-bold">{title}</h3>
+        <p className="text-sm">{description}</p>
       </div>
 
-      <div className="mt-6 flex items-center text-sm font-medium text-white/50 transition-colors group-hover:text-white">
+      <div className="mt-6 flex items-center text-sm font-medium transition-colors">
         Open {title}{" "}
         <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
       </div>
