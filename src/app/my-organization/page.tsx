@@ -11,6 +11,12 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { ModuleCard } from "~/components/ModuleCard";
+import {
+  Sidebar,
+  SidebarProvider,
+  SidebarTrigger,
+} from "~/components/ui/sidebar";
+import { AppSidebar } from "~/components/Sidebar";
 
 export default function DashboardPage() {
   const { organization, isLoaded: orgLoaded } = useOrganization();
@@ -81,7 +87,7 @@ export default function DashboardPage() {
   ];
 
   return (
-    <main className="flex min-h-screen flex-col bg-gradient-to-b from-[#2e026d] to-[#15162c] p-4 text-white md:p-8">
+    <main className="flex min-h-screen flex-col p-4 md:p-8">
       {/* --- HEADER SECTION --- */}
       <div className="mb-12 flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-start md:justify-between">
         {/* Left: Org Info */}
@@ -112,7 +118,7 @@ export default function DashboardPage() {
         {isAdmin && (
           <Link
             href="/my-organization/manage"
-            className="group flex items-center gap-3 rounded-xl bg-white/10 px-5 py-3 font-medium backdrop-blur-sm transition-all hover:scale-105 hover:bg-white/20 active:scale-95"
+            className="group flex items-center gap-3 rounded-xl bg-purple-800 px-5 py-3 font-medium text-white backdrop-blur-sm transition-all hover:scale-105 active:scale-95"
           >
             <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
             <span>Manage Organization</span>

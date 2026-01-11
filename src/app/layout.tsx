@@ -8,9 +8,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 import { ClerkProvider } from "@clerk/nextjs";
 import "../styles/globals.css";
 
-import { Header } from "~/components/Header";
 import { Toaster } from "~/components/ui/sonner";
-import Navigation from "~/components/Navigation";
+import { ThemeProvider } from "next-themes";
 
 export const metadata: Metadata = {
   title: "Devolve CRM",
@@ -31,8 +30,10 @@ export default function RootLayout({
       <html lang="en" className={`${geist.variable}`}>
         <body>
           <TRPCReactProvider>
-            {children}
-            <Toaster />
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+              {children}
+              <Toaster />
+            </ThemeProvider>
           </TRPCReactProvider>
         </body>
       </html>

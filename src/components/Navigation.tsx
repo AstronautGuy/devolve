@@ -1,36 +1,76 @@
-"use client";
+import Link from "next/link";
 
-import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
-import { ArrowLeft } from "lucide-react"; // Or your preferred icon
+import { SidebarTrigger } from "../components/ui/sidebar";
 
-export default function Navigation() {
-  const router = useRouter();
-  const pathname = usePathname(); // We use this to trigger a re-check on route change
-  const [canGoBack, setCanGoBack] = useState(false);
+import {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "../components/ui/breadcrumb";
 
-  useEffect(() => {
-    // Check if the history stack has more than 1 entry.
-    // Length > 1 means the user has navigated at least once.
-    if (typeof window !== "undefined" && window.history.length > 1) {
-      setCanGoBack(true);
-    } else {
-      setCanGoBack(false);
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../components/ui/dropdown-menu";
+
+type Crumb =
+  | {
+      label: string;
+      href?: string;
     }
-  }, [pathname]); // Re-run this check whenever the route changes
+  | {
+      ellipsis: true;
+      items: string[];
+    };
 
-  // If we can't go back, return null (render nothing)
-  if (!canGoBack) return null;
+interface NavigationBarProps {
+  breadcrumbs: Crumb[];
+}
 
+export function Navigation({ breadcrumbs }: NavigationBarProps) {
   return (
-    <button
-      onClick={() => router.back()}
-      className="group flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-600 transition-all hover:text-black"
-      aria-label="Go back"
-    >
-      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 transition-colors group-hover:bg-gray-200">
-        <ArrowLeft className="h-4 w-4" />
-      </div>
-    </button>
+    <div className="flex items-center gap-4">
+      <Breadcrumb>
+        <BreadcrumbList>
+          {breadcrumbs.map((crumb, index) => {
+            const isLast = index === breadcrumbs.length - 1;
+
+            return (
+              <div key={index} className="flex items-center">
+                <BreadcrumbItem>
+                  {"ellipsis" in crumb ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="flex items-center gap-1">
+                        <BreadcrumbEllipsis className="size-4" />
+                        <span className="sr-only">Toggle menu</span>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="start">
+                        {crumb.items.map((item) => (
+                          <DropdownMenuItem key={item}>{item}</DropdownMenuItem>
+                        ))}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : crumb.href && !isLast ? (
+                    <BreadcrumbLink asChild>
+                      <Link href={crumb.href}>{crumb.label}</Link>
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>{crumb.label}</BreadcrumbPage>
+                  )}
+                </BreadcrumbItem>
+
+                {!isLast && <BreadcrumbSeparator />}
+              </div>
+            );
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
   );
 }
