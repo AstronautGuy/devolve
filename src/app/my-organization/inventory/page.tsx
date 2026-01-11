@@ -49,7 +49,11 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Navigation } from "~/components/Navigation";
-import { SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "~/components/ui/sidebar";
 import { AppSidebar } from "~/components/Sidebar";
 
 // --- SCHEMA ---
@@ -185,7 +189,8 @@ export default function InventoryPage() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <div className="w-screen space-y-6 p-6">
+      <SidebarInset>
+      <div className="space-y-6 p-6">
         <section className={"flex flex-row gap-6"}>
           <SidebarTrigger />
           <Navigation
@@ -437,6 +442,7 @@ export default function InventoryPage() {
           </Table>
         </div>
       </div>
+      </SidebarInset>
     </SidebarProvider>
   );
 }
