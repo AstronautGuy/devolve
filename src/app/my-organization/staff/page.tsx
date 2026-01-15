@@ -230,7 +230,7 @@ export default function StaffPage() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <div className="space-y-6 p-6">
+        <main className="space-y-6 p-6">
           <section className={"flex flex-row gap-6"}>
             <SidebarTrigger />
             <Navigation
@@ -521,7 +521,7 @@ export default function StaffPage() {
               </TableBody>
             </Table>
           </div>
-        </div>
+        </main>
       </SidebarInset>
     </SidebarProvider>
   );
