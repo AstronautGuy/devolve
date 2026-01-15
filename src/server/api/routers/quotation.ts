@@ -17,7 +17,6 @@ export const quotationRouter = createTRPCRouter({
       z.object({
         quotationNumber: z.string().min(2),
         quotationTitle: z.string().min(2),
-        quotationSubTitle: z.string().min(2),
         quotationDate: z.date(),
         quotationDueDate: z.date(),
         quotationFrom: z.string().min(2),
@@ -32,7 +31,6 @@ export const quotationRouter = createTRPCRouter({
         orgId: ctx.auth.orgId,
         quotationNumber: input.quotationNumber,
         quotationTitle: input.quotationTitle,
-        quotationSubTitle: input.quotationSubTitle,
         quotationDate: input.quotationDate,
         quotationDueDate: input.quotationDueDate,
         quotationFrom: input.quotationFrom,
@@ -49,7 +47,6 @@ export const quotationRouter = createTRPCRouter({
         id: z.string(),
         quotationNumber: z.string().min(2),
         quotationTitle: z.string().min(2),
-        quotationSubTitle: z.string().min(2),
         quotationDate: z.date(),
         quotationDueDate: z.date(),
         quotationFrom: z.string().min(2),
@@ -65,7 +62,6 @@ export const quotationRouter = createTRPCRouter({
         .set({
           quotationNumber: input.quotationNumber,
           quotationTitle: input.quotationTitle,
-          quotationSubTitle: input.quotationSubTitle,
           quotationDate: input.quotationDate,
           quotationDueDate: input.quotationDueDate,
           quotationFrom: input.quotationFrom,

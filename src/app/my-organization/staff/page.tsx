@@ -5,17 +5,7 @@ import { api } from "~/trpc/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { toast } from "sonner";
-import {
-  Plus,
-  Search,
-  MoreVertical,
-  Trash2,
-  Mail,
-  Phone,
-  Shield,
-  Edit,
-} from "lucide-react";
+
 
 // UI Components
 import { Button } from "~/components/ui/button";
@@ -65,6 +55,17 @@ import {
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { Navigation } from "~/components/Navigation";
+import { toast } from "sonner";
+import {
+  Plus,
+  Search,
+  MoreVertical,
+  Trash2,
+  Mail,
+  Phone,
+  Shield,
+  Edit,
+} from "lucide-react";
 
 // --- 1. DEFINE CONSTANTS FOR TYPE SAFETY ---
 const ROLES = ["Admin", "Manager", "Employee"] as const;

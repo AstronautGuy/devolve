@@ -1,5 +1,10 @@
 "use client";
 
+import { z } from "zod";
+import { api } from "~/trpc/react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 // UI imports
 import {
   SidebarInset,
@@ -18,9 +23,54 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { ChevronDownIcon, PencilIcon } from "lucide-react";
+import { router } from "next/dist/client";
+import { toast } from "sonner";
 
+const quotationSchema = z.object({
+  id: z.string().optional(),
+
+  quotationNumber: z.string(),
+  quotationTitle: z.string(),
+  quotationDate: z.date().optional(),
+  quotationDueDate: z.date().optional(),
+  quotationFrom: z.string().optional(),
+  quotationTo: z.string().optional(),
+  quotationStatus: z
+    .enum(["Draft", "Sent", "Approved", "Rejected"])
+    .default("Draft")
+    .optional(),
+});
+
+type QuotationFormValues = z.infer<typeof quotationSchema>;
 
 export default function NewQuotationPage() {
+
+  const utils = api.useUtils();
+
+  const form = useForm<QuotationFormValues>({
+    resolver: zodResolver(quotationSchema),
+    defaultValues: {
+      quotationNumber: "001",
+      quotationTitle: "Quotation",
+      quotationFrom: "Devolve Studio",
+      quotationTo: "NoCompany",
+      quotationStatus: "Draft",
+    }
+  })
+
+  const createMutation = api.quotation.create.useMutation({
+    onSuccess: async() => {
+      toast.success("Quotation Created SuccessFully");
+      await router.push("/quotations");
+      await utils.quotation.getAll.invalidate();
+    },
+    onError: (err) => toast.error(err.message),
+  });
+
+  const onSubmit = (values: QuotationFormValues) => {
+    createMutation.mutate(values);
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar />
