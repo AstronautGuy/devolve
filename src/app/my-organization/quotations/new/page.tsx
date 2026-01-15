@@ -1,5 +1,6 @@
 "use client";
 
+// UI imports
 import {
   SidebarInset,
   SidebarProvider,
@@ -8,7 +9,6 @@ import {
 import { AppSidebar } from "~/components/Sidebar";
 import { Navigation } from "~/components/Navigation";
 import { InlineEdit } from "~/components/InlineEdit";
-import { DropdownMenu } from "@radix-ui/react-dropdown-menu";
 import { Select, SelectTrigger } from "@radix-ui/react-select";
 import {
   SelectContent,
@@ -18,7 +18,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { ChevronDownIcon, PencilIcon } from "lucide-react";
-import { Separator } from "~/components/ui/separator";
+
 
 export default function NewQuotationPage() {
   return (

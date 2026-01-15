@@ -179,19 +179,34 @@ export const quotations = createTable(
         onDelete: "cascade",
       }),
 
-    quotationNumber: text("quotation_number").notNull(),
-    quotationTitle: varchar("quotation_title", { length: 256 })
+    quotationNumber:
+      text("quotation_number")
+        .notNull(),
+    quotationTitle:
+      varchar("quotation_title", { length: 256 })
       .default("Quotation")
       .notNull(),
-    quotationSubTitle: varchar("quotation_sub_title", { length: 256 }),
-    quoteDate: timestamp("quote_date")
+    quotationSubTitle:
+      varchar("quotation_sub_title",
+        { length: 256 }),
+    quotationDate:
+      timestamp("quote_date")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    dueDate: timestamp("due_date").default(
+    quotationDueDate:
+      timestamp("due_date")
+        .default(
       sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`,
     ),
-    quotationFrom: varchar("quotation_from", { length: 256 }).notNull(),
-    quotationFor: varchar("quotation_for", { length: 256 }).notNull(),
+    quotationFrom:
+      varchar("quotation_from", { length: 256 })
+        .notNull(),
+    quotationTo:
+      varchar("quotation_to", { length: 256 })
+        .notNull(),
+    quotationStatus:
+      varchar("quotation_status", { length: 256 })
+        .default("Draft"),
 
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)

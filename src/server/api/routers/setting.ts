@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { eq } from "drizzle-orm";
 import { settings } from "~/server/db/schema";
 
-export const settingsRouter = createTRPCRouter({
+export const settingRouter = createTRPCRouter({
   get: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.settings.findFirst({
       where: eq(settings.orgId, ctx.auth.orgId),

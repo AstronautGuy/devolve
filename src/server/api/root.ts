@@ -3,6 +3,8 @@ import { taskRouter } from "~/server/api/routers/task";
 import { profileRouter } from "~/server/api/routers/profile";
 import { staffRouter } from "~/server/api/routers/staff";
 import { productRouter } from "~/server/api/routers/product";
+import { settingRouter } from "~/server/api/routers/setting";
+import { quotationRouter } from "~/server/api/routers/quotation";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +16,8 @@ export const appRouter = createTRPCRouter({
   profile: profileRouter,
   staff: staffRouter,
   product: productRouter,
+  setting: settingRouter,
+  quotation: quotationRouter
 });
 
 // export type definition of API
