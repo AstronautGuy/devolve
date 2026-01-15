@@ -6,9 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function generateNextId(currentId: string): string {
-
   return currentId.replace(/\d+$/, (match) => {
-
     const number = parseInt(match, 10);
 
     const nextNumber = number + 1;

@@ -21,12 +21,16 @@ export function useSidebarData() {
       email: user?.primaryEmailAddress?.emailAddress ?? "",
       avatar: user?.imageUrl ?? "",
     },
-    teams: organization? [ {
-      name: organization?.name ?? "",
-      logo: GalleryVerticalEnd,
-      plan: "Active",
-      id: organization?.id ?? "",
-    }] : [],
+    teams: organization
+      ? [
+          {
+            name: organization?.name ?? "",
+            logo: GalleryVerticalEnd,
+            plan: "Active",
+            id: organization?.id ?? "",
+          },
+        ]
+      : [],
     // Mapping Clerk Organizations to the 'teams' format
     navMain: [
       {

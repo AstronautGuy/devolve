@@ -94,13 +94,11 @@ export const staff = createTable(
   "staff",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    orgId:
-      varchar("org_id",
-        { length: 255 })
-        .notNull()
-        .references(() => organizations.id, {
-          onDelete: "cascade",
-        }),
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
 
     // Basic Info
     name: varchar("name", { length: 256 }).notNull(),
@@ -182,16 +180,16 @@ export const quotations = createTable(
       }),
 
     quotationNumber: text("quotation_number").notNull(),
-    quotationTitle: varchar("quotation_title",
-      { length: 256 })
+    quotationTitle: varchar("quotation_title", { length: 256 })
       .default("Quotation")
       .notNull(),
     quotationSubTitle: varchar("quotation_sub_title", { length: 256 }),
     quoteDate: timestamp("quote_date")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    dueDate: timestamp("due_date")
-    .default(sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`),
+    dueDate: timestamp("due_date").default(
+      sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`,
+    ),
     quotationFrom: varchar("quotation_from", { length: 256 }).notNull(),
     quotationFor: varchar("quotation_for", { length: 256 }).notNull(),
 

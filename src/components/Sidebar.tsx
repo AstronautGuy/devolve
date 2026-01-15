@@ -15,7 +15,6 @@ import {
 import { useSidebarData } from "~/components/SidebarData";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-
   const data = useSidebarData();
 
   return (

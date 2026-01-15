@@ -4,7 +4,6 @@ import { eq } from "drizzle-orm";
 import { settings } from "~/server/db/schema";
 
 export const settingsRouter = createTRPCRouter({
-
   get: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.settings.findFirst({
       where: eq(settings.orgId, ctx.auth.orgId),
@@ -35,6 +34,6 @@ export const settingsRouter = createTRPCRouter({
           orgId: ctx.auth.orgId,
           nextQuotationNumber: input.nextQuotationNumber,
         });
-        }
-      }),
+      }
+    }),
 });

@@ -206,16 +206,14 @@ export default function QuotationsPage() {
           <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
             <div>
               <h1 className="text-3xl font-bold tracking-tight">Quotations</h1>
-              <p className="mt-1 text-slate-500">
-                Manage your quotations
-              </p>
+              <p className="mt-1 text-slate-500">Manage your quotations</p>
             </div>
 
-              <Link href="/my-organization/quotations/new">
-                <Button className="hover:bg-slate-800">
-                  <Plus className="mr-2 h-4 w-4" /> Create new quotation
-                </Button>
-              </Link>
+            <Link href="/my-organization/quotations/new">
+              <Button className="hover:bg-slate-800">
+                <Plus className="mr-2 h-4 w-4" /> Create new quotation
+              </Button>
+            </Link>
           </div>
 
           {/* SEARCH BAR */}
@@ -277,27 +275,27 @@ export default function QuotationsPage() {
                         <div className="flex flex-col">
                           <span>{item.name}</span>
                           <span className="text-xs text-slate-400">
-                          {item.category}
-                        </span>
+                            {item.category}
+                          </span>
                         </div>
                       </TableCell>
                       {/* FIX: Use nullish coalescing (??) instead of logical OR (||) */}
                       <TableCell>
-                      <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600">
-                        {item.sku ?? "N/A"}
-                      </span>
+                        <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600">
+                          {item.sku ?? "N/A"}
+                        </span>
                       </TableCell>
                       <TableCell>${item.price}</TableCell>
                       <TableCell>
                         {item.quantity < 5 ? (
                           <span className="inline-flex items-center gap-1 rounded-full bg-red-50 px-2 py-1 text-xs font-medium text-red-600">
-                          <AlertTriangle className="h-3 w-3" /> Low:{" "}
+                            <AlertTriangle className="h-3 w-3" /> Low:{" "}
                             {item.quantity}
-                        </span>
+                          </span>
                         ) : (
                           <span className="text-slate-600">
-                          {item.quantity} units
-                        </span>
+                            {item.quantity} units
+                          </span>
                         )}
                       </TableCell>
                       <TableCell className="text-right">
