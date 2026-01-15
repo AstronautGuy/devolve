@@ -36,7 +36,11 @@ export const tasks = createTable(
     id: uuid("id").defaultRandom().primaryKey(),
 
     // The Link to Clerk: Stores "org_2aT..." string
-    orgId: varchar("org_id", { length: 255 }).notNull(),
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
 
     // Task Details
     title: varchar("title", { length: 256 }).notNull(),
@@ -62,7 +66,11 @@ export const companyProfiles = createTable(
   "company_profile",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    orgId: varchar("org_id", { length: 255 }).notNull(), // Link to Clerk
+    orgId: varchar("org_id", { length: 255 })
+      .notNull() // Link to Clerk
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
 
     // Business Details
     address: text("address"),
@@ -86,7 +94,13 @@ export const staff = createTable(
   "staff",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    orgId: varchar("org_id", { length: 255 }).notNull(),
+    orgId:
+      varchar("org_id",
+        { length: 255 })
+        .notNull()
+        .references(() => organizations.id, {
+          onDelete: "cascade",
+        }),
 
     // Basic Info
     name: varchar("name", { length: 256 }).notNull(),
@@ -112,7 +126,11 @@ export const products = createTable(
   "product",
   {
     id: uuid("id").defaultRandom().primaryKey(),
-    orgId: varchar("org_id", { length: 255 }).notNull(),
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
 
     name: varchar("name", { length: 256 }).notNull(),
     sku: varchar("sku", { length: 100 }), // Stock Keeping Unit

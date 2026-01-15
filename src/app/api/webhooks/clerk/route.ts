@@ -5,8 +5,6 @@ import { db } from "~/server/db";
 import {
   organizations,
   tasks,
-  companyProfiles,
-  staff,
 } from "~/server/db/schema"; // <--- Added companyProfiles
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
@@ -85,16 +83,7 @@ export async function POST(req: Request) {
     const { id } = evt.data as { id: string };
 
     if (id) {
-      // 1. Delete Tasks linked to this Org
-      await db.delete(tasks).where(eq(tasks.orgId, id));
 
-      // 2. Delete Company Profile linked to this Org
-      await db.delete(companyProfiles).where(eq(companyProfiles.orgId, id));
-
-      // 3. Delete Staff linked to this org
-      await db.delete(staff).where(eq(staff.orgId, id));
-
-      // 4. Finally, delete the Organization itself
       await db.delete(organizations).where(eq(organizations.id, id));
 
       console.log(`Deleted Org and all associated data: ${id}`);

@@ -35,6 +35,7 @@ export const profileRouter = createTRPCRouter({
             gstId: input.gstId, // Drizzle maps this to 'tax_id' column
             industry: input.industry,
             staff: input.staff,
+            isOnboarded: true,
           })
           .where(eq(companyProfiles.orgId, ctx.auth.orgId));
       } else {
@@ -44,6 +45,7 @@ export const profileRouter = createTRPCRouter({
           gstId: input.gstId,
           industry: input.industry,
           staff: input.staff,
+          isOnboarded: true,
         });
       }
 
