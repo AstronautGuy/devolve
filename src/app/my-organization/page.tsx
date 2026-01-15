@@ -9,6 +9,7 @@ import {
   Package,
   Settings,
   ShieldAlert,
+  Cloud,
 } from "lucide-react";
 import { ModuleCard } from "~/components/ModuleCard";
 import {
@@ -18,11 +19,13 @@ import {
 } from "~/components/ui/sidebar";
 import { AppSidebar } from "~/components/Sidebar";
 import { Navigation } from "~/components/Navigation";
+import { api } from "~/trpc/react";
 
 export default function DashboardPage() {
   const { organization, isLoaded: orgLoaded } = useOrganization();
   const { user, isLoaded: userLoaded } = useUser();
   const { has, isLoaded: authLoaded } = useAuth();
+  const { data } = api.profile.get.useQuery();
 
   // Wait for auth to load
   if (!authLoaded || !orgLoaded || !userLoaded) {
@@ -42,6 +45,8 @@ export default function DashboardPage() {
     );
 
   const isAdmin = has({ role: "org:admin" });
+
+  const hasCloud = !!data?.hasCloudStorage;
 
   const modules = [
     {
@@ -151,6 +156,18 @@ export default function DashboardPage() {
                 hoverBorderClass={item.border}
               />
             ))}
+
+            {hasCloud && (
+              <ModuleCard
+                title="Cloud Center"
+                description="Check Manage and Renew your Cloud Storage Subscription"
+                href="/my-organization/Cloud"
+                icon={Cloud}
+                // Override styles for the Security Card
+                iconColorClass="bg-purple-500/20 text-purple-400"
+                hoverBorderClass="hover:border-purple-500/40"
+              />
+            )}
 
             {/* Admin Only Extra Card (Audit Logs, etc) */}
             {isAdmin && (

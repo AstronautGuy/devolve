@@ -69,6 +69,8 @@ export const companyProfiles = createTable(
     gstId: varchar("tax_id", { length: 50 }),
     industry: varchar("industry", { length: 100 }),
     staff: varchar("staff", { length: 100 }),
+    isOnboarded: boolean("is_onboarded").default(false).notNull(),
+    hasCloudStorage: boolean("has_cloud").default(false).notNull(),
 
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
