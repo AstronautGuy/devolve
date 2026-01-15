@@ -151,3 +151,56 @@ export const products = createTable(
     orgIdx: index("product_org_idx").on(table.orgId),
   }),
 );
+
+export const settings = createTable(
+  "settings",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
+
+    nextQuotationNumber: text("next_quotation_number").default("001").notNull(),
+  },
+  (table) => ({
+    orgIdx: index("settings_org_idx").on(table.orgId),
+  }),
+);
+
+export const quotations = createTable(
+  "quotation",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
+
+    quotationNumber: text("quotation_number").notNull(),
+    quotationTitle: varchar("quotation_title",
+      { length: 256 })
+      .default("Quotation")
+      .notNull(),
+    quotationSubTitle: varchar("quotation_sub_title", { length: 256 }),
+    quoteDate: timestamp("quote_date")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    dueDate: timestamp("due_date")
+    .default(sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`),
+    quotationFrom: varchar("quotation_from", { length: 256 }).notNull(),
+    quotationFor: varchar("quotation_for", { length: 256 }).notNull(),
+
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    orgIdx: index("quotations_org_idx").on(table.orgId),
+  }),
+);
