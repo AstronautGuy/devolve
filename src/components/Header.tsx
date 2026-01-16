@@ -1,39 +1,66 @@
 "use client";
-
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
-import Link from "next/link";
-import { TaskAlert } from "~/components/TaskAlert";
+import { ThemeToggle } from "~/components/ThemeToggle";
+import Image from "next/image";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 export function Header() {
-  return (
-    <header className="flex h-16 items-center justify-end gap-4 p-4">
-      {/* When NOT logged in */}
-      <SignedOut>
-        <SignInButton />
-        <SignUpButton>
-          <button className="h-10 cursor-pointer rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base">
-            Sign Up
-          </button>
-        </SignUpButton>
-      </SignedOut>
+  const { theme } = useTheme();
+  const [resolvedTheme, setResolvedTheme] = useState<"light" | "dark">("light");
 
-      {/* When logged in */}
-      <SignedIn>
-        <TaskAlert />
-        <Link
-          href="/my-organization"
-          className="flex h-10 items-center justify-center rounded-full bg-[#6c47ff] px-4 text-sm font-medium text-white sm:h-12 sm:px-5 sm:text-base"
-        >
-          My Organization
-        </Link>
-        <UserButton />
-      </SignedIn>
+  useEffect(() => {
+    if (theme === "system") {
+      const isDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      setResolvedTheme(isDark ? "dark" : "light");
+    } else if (theme === "dark") setResolvedTheme("dark");
+    else setResolvedTheme("light");
+  }, [theme]);
+
+  const logoSrc =
+    resolvedTheme === "dark" ? "/logo/LogoDark.webp" : "/logo/LogoLight.webp";
+
+  const navItems = [
+    { label: "Home", link: "#home" },
+    { label: "Work", link: "#work" },
+    { label: "Contact", link: "#contact" },
+  ];
+
+  return (
+    <header
+      className="fixed left-1/2 -translate-x-1/2 z-[999] h-20 w-[80%] mt-4
+             rounded-2xl flex items-center justify-between px-10
+             backdrop-blur-md dark:bg-white/10 bg-black/10
+             border dark:border-white/20 border-white/20
+             shadow-lg shadow-black/10 transition-all duration-300"
+    >
+      {/* Logo */}
+      <div>
+        <Image
+          src={logoSrc}
+          alt="logo"
+          height={50}
+          width={50}
+          className="transition-all duration-300"
+        />
+      </div>
+
+      {/* Navigation */}
+      <nav className="flex gap-8">
+        {navItems.map((item) => (
+          <a
+            key={item.label}
+            href={item.link}
+            className="text-foreground font-medium"
+          >
+            {item.label}
+          </a>
+        ))}
+      </nav>
+
+      {/* Theme toggle */}
+      <div>
+        <ThemeToggle />
+      </div>
     </header>
   );
 }

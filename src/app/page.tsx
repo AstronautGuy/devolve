@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { HydrateClient } from "~/trpc/server";
-import { Header } from "~/components/Header";
+import { Header } from "~/components/HeaderOld";
 
 export default async function Home() {
   return (

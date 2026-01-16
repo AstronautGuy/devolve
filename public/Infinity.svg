@@ -1,0 +1,34 @@
+<svg
+        id="SvgjsSvg1012"
+        width="288"
+        height="288"
+        xmlns="http://www.w3.org/2000/svg"
+        version="1.1"
+>
+    <defs id="SvgjsDefs1013"/>
+    <g id="SvgjsG1014">
+        <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 256 256"
+                width="288"
+                height="288">
+            <rect
+                    width="256"
+                    height="256"
+                    fill="none"
+                    class="selectable">
+
+            </rect>
+            <path
+                    fill="none"
+                    stroke="#6315b3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="24"
+                    d="M101.28431,158.16615l-3.34318,3.775a48,48,0,1,1,0-67.88226l60.11774,67.88226a48,48,0,1,0,0-67.88226l-3.34318,3.775"
+                    class="svgStroke colorStroke000000-1 selectable">
+
+            </path>
+        </svg>
+    </g>
+</svg>

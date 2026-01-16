@@ -10,6 +10,7 @@ import "../styles/globals.css";
 
 import { Toaster } from "~/components/ui/sonner";
 import { ThemeProvider } from "next-themes";
+import { Header } from "~/components/Header";
 
 export const metadata: Metadata = {
   title: "Devolve CRM",
