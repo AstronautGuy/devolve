@@ -25,7 +25,10 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "~/components/ui/sidebar";
+
+
 import { useClerk } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 
 export function NavUser({
   user,
@@ -38,7 +41,9 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar();
 
-  const { signOut } = useClerk();
+  const { signOut, openUserProfile, openOrganizationProfile } = useClerk();
+
+  const router = useRouter();
 
   return (
     <SidebarMenu>
@@ -80,18 +85,20 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => router.push("/plans-and-pricing")}>
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openUserProfile()}>
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem onClick={() => openOrganizationProfile({
+                __experimental_startPath: '/organization-billing',
+              })}>
                 <CreditCard />
                 Billing
               </DropdownMenuItem>
