@@ -15,14 +15,14 @@ export const quotationRouter = createTRPCRouter({
   create: protectedProcedure
     .input(
       z.object({
-        quotationNumber: z.string().min(2),
-        quotationTitle: z.string().min(2),
-        quotationSubTitle: z.string().min(2),
-        quotationDate: z.date().optional(),
-        quotationDueDate: z.date().optional(),
-        quotationFrom: z.string().min(2),
-        quotationTo: z.string().min(2),
-        quotationStatus: z
+        number: z.string().min(2),
+        title: z.string().min(2),
+        subTitle: z.string().min(2),
+        date: z.date().optional(),
+        dueDate: z.date().optional(),
+        from: z.string().min(2),
+        to: z.string().min(2),
+        status: z
           .enum(["Draft", "Sent", "Approved", "Rejected"])
           .default("Draft"),
       }),
@@ -30,14 +30,14 @@ export const quotationRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(quotations).values({
         orgId: ctx.auth.orgId,
-        quotationNumber: input.quotationNumber,
-        quotationTitle: input.quotationTitle,
-        quotationSubTitle: input.quotationSubTitle,
-        quotationDate: input.quotationDate,
-        quotationDueDate: input.quotationDueDate,
-        quotationFrom: input.quotationFrom,
-        quotationTo: input.quotationTo,
-        quotationStatus: input.quotationStatus,
+        number: input.number,
+        title: input.title,
+        subTitle: input.subTitle,
+        date: input.date,
+        dueDate: input.dueDate,
+        from: input.from,
+        to: input.to,
+        status: input.status,
       });
 
       return { success: true };
@@ -47,14 +47,14 @@ export const quotationRouter = createTRPCRouter({
     .input(
       z.object({
         id: z.string(),
-        quotationNumber: z.string().min(2),
-        quotationTitle: z.string().min(2),
-        quotationSubTitle: z.string().min(2).optional(),
-        quotationDate: z.date().optional(),
-        quotationDueDate: z.date().optional(),
-        quotationFrom: z.string().min(2),
-        quotationTo: z.string().min(2),
-        quotationStatus: z
+        number: z.string().min(2),
+        title: z.string().min(2),
+        subTitle: z.string().min(2).optional(),
+        date: z.date().optional(),
+        dueDate: z.date().optional(),
+        from: z.string().min(2),
+        to: z.string().min(2),
+        status: z
           .enum(["Draft", "Sent", "Approved", "Rejected"])
           .default("Draft"),
       }),
@@ -63,14 +63,14 @@ export const quotationRouter = createTRPCRouter({
       await ctx.db
       .update(quotations)
         .set({
-          quotationNumber: input.quotationNumber,
-          quotationTitle: input.quotationTitle,
-          quotationSubTitle: input.quotationSubTitle,
-          quotationDate: input.quotationDate,
-          quotationDueDate: input.quotationDueDate,
-          quotationFrom: input.quotationFrom,
-          quotationTo: input.quotationTo,
-          quotationStatus: input.quotationStatus,
+          number: input.number,
+          title: input.title,
+          subTitle: input.subTitle,
+          date: input.date,
+          dueDate: input.dueDate,
+          from: input.from,
+          to: input.to,
+          status: input.status,
         })
         .where(
         and(

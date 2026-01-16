@@ -64,9 +64,9 @@ export default function QuotationsPage() {
   const filteredQuotations = quotations?.filter((quotation) => {
     const query = searchQuery.toLowerCase();
     return (
-      quotation.quotationNumber.includes(query) ||
-      quotation.quotationFrom.toLowerCase().includes(query) ||
-      quotation.quotationTo.toLowerCase().includes(query)
+      quotation.number.includes(query) ||
+      quotation.from.toLowerCase().includes(query) ||
+      quotation.to.toLowerCase().includes(query)
     );
   });
 
@@ -164,25 +164,25 @@ export default function QuotationsPage() {
                     <TableRow key={quotation.id}>
                       <TableCell className="font-medium">
                         <div className="flex flex-col">
-                          <span>{quotation.quotationNumber}</span>
+                          <span>{quotation.number}</span>
                         </div>
                       </TableCell>
                       {/* FIX: Use nullish coalescing (??) instead of logical OR (||) */}
                       <TableCell>
                         <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600">
-                          {quotation.quotationTo}
+                          {quotation.to}
                         </span>
                       </TableCell>
                       <TableCell>
                         <span className="rounded bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600">
-                          {quotation.quotationFrom}
+                          {quotation.from}
                         </span>
                       </TableCell>
                       <TableCell>
                         <span
-                          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(quotation.quotationStatus ?? "Active")}`}
+                          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(quotation.status ?? "Active")}`}
                         >
-                          {quotation.quotationStatus}
+                          {quotation.status}
                         </span>
                       </TableCell>
                       <TableCell className="text-right">

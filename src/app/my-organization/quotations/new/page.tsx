@@ -30,14 +30,14 @@ import { Button } from "~/components/ui/button"; // Assuming you have a Button c
 // 1. Adjusted Schema to accept strings for dates (since you use text inputs like "Today")
 const quotationSchema = z.object({
   id: z.string().optional(),
-  quotationNumber: z.string(),
-  quotationTitle: z.string(),
-  quotationSubTitle: z.string(),
-  quotationDate: z.string().optional(), // Changed from z.date() to z.string() for text input support
-  quotationDueDate: z.string().optional(), // Changed from z.date() to z.string()
-  quotationFrom: z.string(),
-  quotationTo: z.string(),
-  quotationStatus: z
+  number: z.string(),
+  title: z.string(),
+  subTitle: z.string(),
+  date: z.string().optional(), // Changed from z.date() to z.string() for text input support
+  dueDate: z.string().optional(), // Changed from z.date() to z.string()
+  from: z.string(),
+  to: z.string(),
+  status: z
     .enum(["Draft", "Sent", "Approved", "Rejected"])
     .default("Draft")
     .optional(),
@@ -53,26 +53,25 @@ export default function NewQuotationPage() {
   const form = useForm<QuotationFormValues>({
     resolver: zodResolver(quotationSchema),
     defaultValues: {
-      quotationNumber: "001",
-      quotationTitle: "Quotation",
-      quotationSubTitle: "Quotation Subtitle", // Fixed default to match UI
-      quotationFrom: "Devolve Studio",
-      quotationTo: "Dev Infotech", // Fixed to match UI logic
-      quotationDate: "",
-      quotationDueDate: "",
-      quotationStatus: "Draft",
+      number: "001",
+      title: "Quotation",
+      subTitle: "Quotation Subtitle", // Fixed default to match UI
+      from: "Devolve Studio",
+      to: "Dev Infotech", // Fixed to match UI logic
+      date: "",
+      dueDate: "",
+      status: "Draft",
     },
   });
 
-  const { setValue, handleSubmit, watch, formState } = form;
+  const { setValue, handleSubmit, watch } = form;
   const values = watch(); // Watch values to display current state in UI if needed
 
   const createMutation = api.quotation.create.useMutation({
     onSuccess: async () => {
       toast.success("Quotation Created Successfully");
       await utils.quotation.getAll.invalidate();
-      // Optional: Redirect after save
-      // router.push("/quotations");
+      router.push("/my-organization/quotations");
     },
     onError: (err) => toast.error(err.message),
   });
@@ -95,8 +94,8 @@ export default function NewQuotationPage() {
     // Create the payload matching the Server Schema (Date objects)
     const submissionData = {
       ...values,
-      quotationDate: parseDateString(values.quotationDate),
-      quotationDueDate: parseDateString(values.quotationDueDate),
+      date: parseDateString(values.date),
+      dueDate: parseDateString(values.dueDate),
     };
 
     // Now .mutate will receive the correct Date types
@@ -155,14 +154,14 @@ export default function NewQuotationPage() {
             <div className="flex flex-col items-center space-y-4">
               {/* 4. Connected Inputs */}
               <InlineEdit
-                defaultValue={values.quotationTitle}
+                defaultValue={values.title}
                 className="max-w-fit border-dotted text-3xl"
-                onSave={(val) => handleFieldChange("quotationTitle", val)}
+                onSave={(val) => handleFieldChange("title", val)}
               />
               <InlineEdit
-                defaultValue={values.quotationSubTitle}
+                defaultValue={values.subTitle}
                 className="max-w-fit border-dotted border-white/30 text-sm font-light text-white/30"
-                onSave={(val) => handleFieldChange("quotationSubTitle", val)}
+                onSave={(val) => handleFieldChange("subTitle", val)}
               />
             </div>
           </section>
@@ -176,10 +175,10 @@ export default function NewQuotationPage() {
                 </div>
                 <div className="flex flex-col">
                   <InlineEdit
-                    defaultValue={values.quotationNumber}
+                    defaultValue={values.number}
                     pencilIcon={false}
                     className="border-foreground/40 text-sm font-light"
-                    onSave={(val) => handleFieldChange("quotationNumber", val)}
+                    onSave={(val) => handleFieldChange("number", val)}
                   />
                   <p className="text-foreground/50 mt-1 text-xs">
                     Last Quote No. INV-2025-3001
@@ -191,10 +190,10 @@ export default function NewQuotationPage() {
               <div className="grid grid-cols-[180px_1fr] items-start gap-6 pl-20">
                 <div className="p-2 text-sm font-light">Quotation Date</div>
                 <InlineEdit
-                  defaultValue={values.quotationDate}
+                  defaultValue={values.date}
                   pencilIcon={false}
                   className="border-foreground/40 text-sm font-light"
-                  onSave={(val) => handleFieldChange("quotationDate", val)}
+                  onSave={(val) => handleFieldChange("date", val)}
                 />
               </div>
 
@@ -202,10 +201,10 @@ export default function NewQuotationPage() {
               <div className="grid grid-cols-[180px_1fr] items-start gap-6 pl-20">
                 <div className="p-2 text-sm font-light">Due Date</div>
                 <InlineEdit
-                  defaultValue={values.quotationDueDate}
+                  defaultValue={values.dueDate}
                   pencilIcon={false}
                   className="border-foreground/40 text-sm font-light"
-                  onSave={(val) => handleFieldChange("quotationDueDate", val)}
+                  onSave={(val) => handleFieldChange("dueDate", val)}
                 />
               </div>
             </div>
@@ -222,8 +221,8 @@ export default function NewQuotationPage() {
 
               {/* 5. Connected Select */}
               <Select
-                onValueChange={(val) => handleFieldChange("quotationFrom", val)}
-                defaultValue={values.quotationFrom}
+                onValueChange={(val) => handleFieldChange("from", val)}
+                defaultValue={values.from}
               >
                 <SelectTrigger className="bg-foreground/10 flex w-full items-center justify-between rounded-md px-4 py-2 text-start">
                   <SelectValue placeholder="Select Business" />
@@ -254,7 +253,7 @@ export default function NewQuotationPage() {
                 <p className="text-foreground/70 text-xl font-light">
                   Business Name:
                 </p>
-                <p className="text-md font-light">{values.quotationFrom}</p>
+                <p className="text-md font-light">{values.from}</p>
               </div>
             </div>
 
@@ -265,8 +264,8 @@ export default function NewQuotationPage() {
               </h3>
 
               <Select
-                onValueChange={(val) => handleFieldChange("quotationTo", val)}
-                defaultValue={values.quotationTo}
+                onValueChange={(val) => handleFieldChange("to", val)}
+                defaultValue={values.to}
               >
                 <SelectTrigger className="bg-foreground/10 flex w-full items-center justify-between rounded-md px-4 py-2 text-start">
                   <SelectValue placeholder="Select Client" />
@@ -293,7 +292,7 @@ export default function NewQuotationPage() {
                 <p className="text-foreground/70 text-xl font-light">
                   Business Name:
                 </p>
-                <p className="text-md font-light">{values.quotationTo}</p>
+                <p className="text-md font-light">{values.to}</p>
               </div>
             </div>
           </section>

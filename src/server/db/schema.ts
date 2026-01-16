@@ -14,7 +14,7 @@ import {
  * Use the same database instance for multiple projects.
  * This ensures your tables are prefixed (e.g. finity-erp_organization)
  */
-export const createTable = pgTableCreator((name) => `devolve_${name}`);
+export const createTable = pgTableCreator((name) => name);
 
 // --- ORGANIZATION TABLE ---
 export const organizations = createTable("organization", {
@@ -179,33 +179,33 @@ export const quotations = createTable(
         onDelete: "cascade",
       }),
 
-    quotationNumber:
+    number:
       text("quotation_number")
         .notNull(),
-    quotationTitle:
+    title:
       varchar("quotation_title", { length: 256 })
       .default("Quotation")
       .notNull(),
-    quotationSubTitle:
+    subTitle:
     varchar("quotation_sub_title", { length: 256 })
       .default("QuotationSubTitle")
       .notNull(),
-    quotationDate:
+    date:
       timestamp("quote_date")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    quotationDueDate:
+    dueDate:
       timestamp("due_date")
         .default(
       sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`,
     ),
-    quotationFrom:
+    from:
       varchar("quotation_from", { length: 256 })
         .notNull(),
-    quotationTo:
+   to:
       varchar("quotation_to", { length: 256 })
         .notNull(),
-    quotationStatus:
+    status:
       varchar("quotation_status", { length: 256 })
         .default("Draft"),
 
