@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { products } from "~/server/db/schema";
 import { eq, desc, and } from "drizzle-orm";
 
-export const productRouter = createTRPCRouter({
+export const productsRouter = createTRPCRouter({
   // 1. Get All Products
   getAll: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.products.findMany({

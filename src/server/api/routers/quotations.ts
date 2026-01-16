@@ -4,7 +4,7 @@ import { quotations, settings } from "~/server/db/schema";
 import { eq, and, desc } from "drizzle-orm"; // Import 'and' for security
 import { generateNextId } from "~/lib/utils";
 
-export const quotationRouter = createTRPCRouter({
+export const quotationsRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.quotations.findMany({
       where: eq(quotations.orgId, ctx.auth.orgId),
@@ -61,7 +61,7 @@ export const quotationRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       await ctx.db
-      .update(quotations)
+        .update(quotations)
         .set({
           number: input.number,
           title: input.title,
@@ -73,21 +73,23 @@ export const quotationRouter = createTRPCRouter({
           status: input.status,
         })
         .where(
-        and(
-          eq(quotations.id, input.id),
-          eq(quotations.orgId, ctx.auth.orgId),
-        ),
-      );
+          and(
+            eq(quotations.id, input.id),
+            eq(quotations.orgId, ctx.auth.orgId),
+          ),
+        );
     }),
 
   delete: protectedProcedure
-    .input(z.object({id:z.string() }))
+    .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.delete(quotations).where(
-        and(
-          eq(quotations.id, input.id),
-          eq(quotations.orgId, ctx.auth.orgId)
-        )
-      );
-    })
+      await ctx.db
+        .delete(quotations)
+        .where(
+          and(
+            eq(quotations.id, input.id),
+            eq(quotations.orgId, ctx.auth.orgId),
+          ),
+        );
+    }),
 });

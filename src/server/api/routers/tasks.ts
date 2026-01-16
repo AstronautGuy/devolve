@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { tasks } from "~/server/db/schema";
 import { and, eq } from "drizzle-orm";
 
-export const taskRouter = createTRPCRouter({
+export const tasksRouter = createTRPCRouter({
   // 1. Get the most recent pending task for this Org
   getPending: protectedProcedure.query(async ({ ctx }) => {
     // We use 'findFirst' to just get one alert at a time

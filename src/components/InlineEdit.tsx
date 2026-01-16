@@ -65,14 +65,14 @@ export function InlineEdit({
     <div
       onClick={() => setIsEditing(true)}
       className={cn(
-        "group hover:border-input flex cursor-pointer items-center gap-2 border-b border-foreground/60",
+        "group hover:border-input border-foreground/60 flex cursor-pointer items-center gap-2 border-b",
         !value && "text-muted-foreground", // Style for empty/placeholder state
         className,
       )}
     >
       {value || placeholder}
       {/* Optional: Show a pencil icon on hover to hint interactivity */}
-      {required && <span className="text-red-500 -ml-2">*</span>}
+      {required && <span className="-ml-2 text-red-500">*</span>}
       {pencilIcon && <Pencil className="h-4 w-4" />}
     </div>
   );

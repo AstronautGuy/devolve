@@ -26,7 +26,6 @@ import {
   useSidebar,
 } from "~/components/ui/sidebar";
 
-
 import { useClerk } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 
@@ -85,7 +84,9 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => router.push("/plans-and-pricing")}>
+              <DropdownMenuItem
+                onClick={() => router.push("/plans-and-pricing")}
+              >
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>
@@ -96,9 +97,13 @@ export function NavUser({
                 <BadgeCheck />
                 Account
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => openOrganizationProfile({
-                __experimental_startPath: '/organization-billing',
-              })}>
+              <DropdownMenuItem
+                onClick={() =>
+                  openOrganizationProfile({
+                    __experimental_startPath: "/organization-billing",
+                  })
+                }
+              >
                 <CreditCard />
                 Billing
               </DropdownMenuItem>

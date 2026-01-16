@@ -28,7 +28,7 @@ export const staffRouter = createTRPCRouter({
     .mutation(async ({ ctx, input }) => {
       await ctx.db.insert(staff).values({
         orgId: ctx.auth.orgId,
-        ...input
+        ...input,
       });
 
       return { success: true };
@@ -50,7 +50,7 @@ export const staffRouter = createTRPCRouter({
       await ctx.db
         .update(staff)
         .set({
-          ...input
+          ...input,
         })
         .where(
           and(

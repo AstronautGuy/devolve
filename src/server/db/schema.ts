@@ -30,7 +30,7 @@ export const organizations = createTable("organization", {
 });
 
 export const tasks = createTable(
-  "task",
+  "tasks",
   {
     // Unique ID using UUID
     id: uuid("id").defaultRandom().primaryKey(),
@@ -121,7 +121,7 @@ export const staff = createTable(
 );
 
 export const products = createTable(
-  "product",
+  "products",
   {
     id: uuid("id").defaultRandom().primaryKey(),
     orgId: varchar("org_id", { length: 255 })
@@ -169,7 +169,7 @@ export const settings = createTable(
 );
 
 export const quotations = createTable(
-  "quotation",
+  "quotations",
   {
     id: uuid("id").defaultRandom().primaryKey(),
 
@@ -179,35 +179,22 @@ export const quotations = createTable(
         onDelete: "cascade",
       }),
 
-    number:
-      text("quotation_number")
-        .notNull(),
-    title:
-      varchar("quotation_title", { length: 256 })
+    number: text("quotation_number").notNull(),
+    title: varchar("quotation_title", { length: 256 })
       .default("Quotation")
       .notNull(),
-    subTitle:
-    varchar("quotation_sub_title", { length: 256 })
+    subTitle: varchar("quotation_sub_title", { length: 256 })
       .default("QuotationSubTitle")
       .notNull(),
-    date:
-      timestamp("quote_date")
+    date: timestamp("quote_date")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    dueDate:
-      timestamp("due_date")
-        .default(
+    dueDate: timestamp("due_date").default(
       sql`CURRENT_TIMESTAMP + INTERVAL '14 days'`,
     ),
-    from:
-      varchar("quotation_from", { length: 256 })
-        .notNull(),
-   to:
-      varchar("quotation_to", { length: 256 })
-        .notNull(),
-    status:
-      varchar("quotation_status", { length: 256 })
-        .default("Draft"),
+    from: varchar("quotation_from", { length: 256 }).notNull(),
+    to: varchar("quotation_to", { length: 256 }).notNull(),
+    status: varchar("quotation_status", { length: 256 }).default("Draft"),
 
     createdAt: timestamp("created_at")
       .default(sql`CURRENT_TIMESTAMP`)
@@ -216,5 +203,57 @@ export const quotations = createTable(
   },
   (table) => ({
     orgIdx: index("quotations_org_idx").on(table.orgId),
+  }),
+);
+
+/* clients
+name*
+industry
+country*
+city*
+gst
+pan
+type [individual, company]
+status [active, inactive]
+address [country, state, city, pincode, para]
+shipping_address [country, state, city, pincode, para] or same as address button
+account details
+ */
+
+export const clients = createTable(
+  "clients",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
+
+    name: text("name").notNull(),
+    industry: varchar("industry", { length: 100 }),
+
+    country: varchar("country", { length: 100 }).notNull(),
+    state: varchar("state", { length: 100 }),
+    city: varchar("city", { length: 100 }).notNull(),
+    pincode: varchar("pincode", { length: 100 }),
+
+    gst: varchar("gst", { length: 100 }),
+    pan: varchar("pan", { length: 100 }),
+
+    type: varchar("type", { length: 100 }).default("individual"),
+    status: varchar("status", { length: 100 }).default("active"),
+
+    address: text("address"),
+    shipping_address: text("shipping_address"),
+
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    orgIdx: index("clients_org_idx").on(table.orgId),
   }),
 );

@@ -3,13 +3,7 @@
 import { useState } from "react";
 import { api } from "~/trpc/react";
 import { toast } from "sonner";
-import {
-  Plus,
-  Search,
-  MoreVertical,
-  Trash2,
-  X,
-} from "lucide-react";
+import { Plus, Search, MoreVertical, Trash2, X } from "lucide-react";
 
 // UI Components
 import { Button } from "~/components/ui/button";
@@ -36,7 +30,6 @@ import {
 } from "~/components/ui/sidebar";
 import { AppSidebar } from "~/components/Sidebar";
 import Link from "next/link";
-
 
 const getStatusColor = (status: string) => {
   switch (status) {
@@ -101,7 +94,7 @@ export default function QuotationsPage() {
             </div>
 
             <Link href="/my-organization/quotations/new">
-              <Button className="hover:bg-slate-800">
+              <Button className="hover:scale-105">
                 <Plus className="mr-2 h-4 w-4" /> Create new quotation
               </Button>
             </Link>
