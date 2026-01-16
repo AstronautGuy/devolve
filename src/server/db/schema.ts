@@ -186,6 +186,10 @@ export const quotations = createTable(
       varchar("quotation_title", { length: 256 })
       .default("Quotation")
       .notNull(),
+    quotationSubTitle:
+    varchar("quotation_sub_title", { length: 256 })
+      .default("QuotationSubTitle")
+      .notNull(),
     quotationDate:
       timestamp("quote_date")
       .default(sql`CURRENT_TIMESTAMP`)

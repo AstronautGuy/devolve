@@ -17,8 +17,9 @@ export const quotationRouter = createTRPCRouter({
       z.object({
         quotationNumber: z.string().min(2),
         quotationTitle: z.string().min(2),
-        quotationDate: z.date(),
-        quotationDueDate: z.date(),
+        quotationSubTitle: z.string().min(2),
+        quotationDate: z.date().optional(),
+        quotationDueDate: z.date().optional(),
         quotationFrom: z.string().min(2),
         quotationTo: z.string().min(2),
         quotationStatus: z
@@ -31,6 +32,7 @@ export const quotationRouter = createTRPCRouter({
         orgId: ctx.auth.orgId,
         quotationNumber: input.quotationNumber,
         quotationTitle: input.quotationTitle,
+        quotationSubTitle: input.quotationSubTitle,
         quotationDate: input.quotationDate,
         quotationDueDate: input.quotationDueDate,
         quotationFrom: input.quotationFrom,
@@ -47,8 +49,9 @@ export const quotationRouter = createTRPCRouter({
         id: z.string(),
         quotationNumber: z.string().min(2),
         quotationTitle: z.string().min(2),
-        quotationDate: z.date(),
-        quotationDueDate: z.date(),
+        quotationSubTitle: z.string().min(2).optional(),
+        quotationDate: z.date().optional(),
+        quotationDueDate: z.date().optional(),
         quotationFrom: z.string().min(2),
         quotationTo: z.string().min(2),
         quotationStatus: z
@@ -62,6 +65,7 @@ export const quotationRouter = createTRPCRouter({
         .set({
           quotationNumber: input.quotationNumber,
           quotationTitle: input.quotationTitle,
+          quotationSubTitle: input.quotationSubTitle,
           quotationDate: input.quotationDate,
           quotationDueDate: input.quotationDueDate,
           quotationFrom: input.quotationFrom,
@@ -79,6 +83,11 @@ export const quotationRouter = createTRPCRouter({
   delete: protectedProcedure
     .input(z.object({id:z.string() }))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.delete(quotations).where(eq(quotations.id, input.id));
+      await ctx.db.delete(quotations).where(
+        and(
+          eq(quotations.id, input.id),
+          eq(quotations.orgId, ctx.auth.orgId)
+        )
+      );
     })
 });
