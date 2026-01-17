@@ -51,7 +51,7 @@ export default function QuotationsPage() {
 
   const utils = api.useUtils();
 
-  const { data: quotations, isLoading } = api.quotation.getAll.useQuery();
+  const { data: quotations, isLoading } = api.quotations.getAll.useQuery();
 
   // Client-side filtering logic
   const filteredQuotations = quotations?.filter((quotation) => {
@@ -63,10 +63,10 @@ export default function QuotationsPage() {
     );
   });
 
-  const deleteMutation = api.quotation.delete.useMutation({
+  const deleteMutation = api.quotations.delete.useMutation({
     onSuccess: async () => {
       toast.success("Quotation Deleted");
-      await utils.quotation.getAll.invalidate();
+      await utils.quotations.getAll.invalidate();
     },
     onError: (err) => toast.error(err.message),
   });
@@ -134,11 +134,11 @@ export default function QuotationsPage() {
               <TableBody>
                 {isLoading ? (
                   <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="h-24 text-center text-slate-500"
-                    >
-                      Loading your quotations...
+                    <TableCell colSpan={5} className="h-24 text-center">
+                      <div className="flex items-center justify-center gap-2 text-slate-500">
+                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                        Loading your quotations...
+                      </div>
                     </TableCell>
                   </TableRow>
                 ) : filteredQuotations?.length === 0 ? (

@@ -64,7 +64,9 @@ import {
   Phone,
   Shield,
   Edit,
+  X,
 } from "lucide-react";
+import { staff } from "~/server/db/schema";
 
 // --- 1. DEFINE CONSTANTS FOR TYPE SAFETY ---
 const ROLES = ["Admin", "Manager", "Employee"] as const;
@@ -128,6 +130,7 @@ const getStatusColor = (status: string) => {
 };
 
 export default function StaffPage() {
+  const [searchQuery, setSearchQuery] = useState(""); // Search State
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingStaff, setEditingStaff] = useState<StaffFormValues | null>(
     null,
@@ -137,6 +140,15 @@ export default function StaffPage() {
 
   // 1. Fetch Staff Data
   const { data: staffList, isLoading } = api.staff.getAll.useQuery();
+
+  const filteredStaff = staffList?.filter((staff) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      staff.name.includes(query) ||
+      staff.status?.toLowerCase().includes(query) ||
+      staff.email.toLowerCase().includes(query)
+    );
+  });
 
   // 2. Setup Form with Explicit Type
   const form = useForm<StaffFormValues>({
@@ -403,12 +415,22 @@ export default function StaffPage() {
           </div>
 
           {/* SEARCH & FILTER */}
-          <div className="flex w-fit items-center space-x-2 rounded-lg border p-2">
-            <Search className="h-4 w-4 text-slate-400" />
+          <div className="relative max-w-md">
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <Input
-              placeholder="Search employees..."
-              className="h-8 w-64 border-none focus-visible:ring-0"
+              placeholder="Search among your clients..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-8 pl-9"
             />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            )}
           </div>
 
           {/* DATA TABLE */}
