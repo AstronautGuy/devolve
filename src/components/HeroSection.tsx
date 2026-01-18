@@ -63,7 +63,7 @@ export function HeroSection() {
     }
     document.addEventListener("click", onClick);
 
-    // Floating elements on scroll
+    // Floating elements on
     let scrolled = false;
     function onScroll() {
       if (!scrolled) {
