@@ -1,20 +1,53 @@
-import Link from "next/link";
-import { HydrateClient } from "~/trpc/server";
-import { Header } from "~/components/Header";
+"use client"
 
-export default async function Home() {
+import Link from "next/link";
+import { Header } from "~/components/Header";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import React from "react";
+
+export default function Home() {
   return (
-    <HydrateClient>
-      <main className="relative min-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white selection:bg-purple-500 selection:text-white transition-colors duration-300">
+    <>
+      <main className="relative max-h-screen bg-white text-slate-900 dark:bg-slate-950 dark:text-white selection:bg-purple-500 selection:text-white transition-colors duration-300 overflow-x-hidden">
 
         {/* Header (ThemeToggle should be inside Header component) */}
         <Header />
 
-        {/* Decorative Background Gradients */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] h-[500px] w-[500px] rounded-full bg-purple-400/20 dark:bg-purple-600/20 blur-[100px]" />
-          <div className="absolute right-[-10%] bottom-[-10%] h-[500px] w-[500px] rounded-full bg-blue-400/20 dark:bg-blue-600/10 blur-[100px]" />
-        </div>
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-60 -left-60 filter blur-3xl opacity-60
+                   mix-blend-multiply dark:mix-blend-screen"
+        >
+          <Image
+            src="/Infinity.svg"
+            height={1000}
+            width={1000}
+            alt="infinity"
+            aria-hidden
+            draggable={false}
+            className="rotate-[125deg] select-none"
+          />
+        </motion.div>
+
+        <motion.div
+          animate={{ scale: [1.1, 1, 1.1], opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-60 -right-60 filter blur-3xl opacity-60
+                   mix-blend-multiply dark:mix-blend-screen"
+        >
+          <Image
+            src="/Infinity.svg"
+            height={1000}
+            width={1000}
+            alt="infinity"
+            aria-hidden
+            draggable={false}
+            className="rotate-[125deg] select-none"
+          />
+        </motion.div>
+
 
         {/* Hero Section */}
         <div className="relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center gap-8 px-6 py-20 text-center md:py-32">
@@ -75,6 +108,6 @@ export default async function Home() {
           © {new Date().getFullYear()} Devolve. All rights reserved.
         </footer>
       </main>
-    </HydrateClient>
+    </>
   );
 }
