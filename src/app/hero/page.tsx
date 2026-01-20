@@ -57,7 +57,7 @@ export default function Home() {
 
           <h1 className="max-w-4xl text-5xl font-extrabold tracking-tight sm:text-7xl">
             Transforming Ideas into <br />
-            <span className="bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-purple-500 to-indigo-400 bg-clip-text text-transparent">
               Digital Reality
             </span>
           </h1>
