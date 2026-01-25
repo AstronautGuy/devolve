@@ -92,9 +92,6 @@ export default function DashboardPage() {
   ];
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
         <main className="flex min-h-screen flex-col space-y-6 p-6">
           <section className={"flex flex-row gap-6"}>
             <SidebarTrigger />
@@ -184,7 +181,5 @@ export default function DashboardPage() {
             )}
           </div>
         </main>
-      </SidebarInset>
-    </SidebarProvider>
   );
 }

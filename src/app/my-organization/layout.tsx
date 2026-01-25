@@ -30,16 +30,6 @@ export default function OrgLayout({
             <SidebarProvider>
               <AppSidebar/>
               <SidebarInset>
-                  <section className={"flex flex-row gap-6"}>
-                    <SidebarTrigger />
-                    <Navigation
-                      breadcrumbs={[
-                        { label: "Home", href: "/" },
-                        { label: "My Organization", href: "/my-organization" },
-                        { label: "Clients" },
-                      ]}
-                    />
-                  </section>
               {children}
               </SidebarInset>
             </SidebarProvider>

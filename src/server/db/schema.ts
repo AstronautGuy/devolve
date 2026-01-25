@@ -12,7 +12,7 @@ import {
 } from "drizzle-orm/pg-core";
 /**
  * Use the same database instance for multiple projects.
- * This ensures your tables are prefixed (e.g. finity-erp_organization)
+ * This ensures your tables are prefixed (e.g., finity-erp_organization)
  */
 export const createTable = pgTableCreator((name) => name);
 
@@ -206,20 +206,6 @@ export const quotations = createTable(
   }),
 );
 
-/* clients
-name*
-industry
-country*
-city*
-gst
-pan
-type [individual, company]
-status [active, inactive]
-address [country, state, city, pincode, para]
-shipping_address [country, state, city, pincode, para] or same as address button
-account details
- */
-
 export const clients = createTable(
   "clients",
   {
@@ -255,5 +241,38 @@ export const clients = createTable(
   },
   (table) => ({
     orgIdx: index("clients_org_idx").on(table.orgId),
+  }),
+);
+
+export const reminders = createTable(
+  "reminders",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+
+    orgId: varchar("org_id", { length: 255 })
+      .notNull()
+      .references(() => organizations.id, {
+        onDelete: "cascade",
+      }),
+
+    client_name: text("name").notNull(),
+    client_email: varchar("email", { length: 256 }).notNull(),
+    phone: varchar("phone", { length: 20 }),
+    product_name: text("product_name").notNull(),
+
+    // --- New Fields ---
+    start_date: timestamp("start_date").notNull(), // Nullable by default
+    end_date: timestamp("end_date").notNull(), // Nullable by default
+
+    // Simple Varchar Status
+    status: varchar("status", { length: 50 }).notNull().default("inactive"),
+
+    createdAt: timestamp("created_at")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    updatedAt: timestamp("updatedAt").$onUpdate(() => new Date()),
+  },
+  (table) => ({
+    orgIdx: index("reminders_org_idx").on(table.orgId),
   }),
 );

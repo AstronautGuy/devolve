@@ -47,10 +47,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import { AppSidebar } from "~/components/Sidebar";
 import {
-  SidebarInset,
-  SidebarProvider,
   SidebarTrigger,
 } from "~/components/ui/sidebar";
 import { Navigation } from "~/components/Navigation";
@@ -66,7 +63,6 @@ import {
   Edit,
   X,
 } from "lucide-react";
-import { staff } from "~/server/db/schema";
 
 // --- 1. DEFINE CONSTANTS FOR TYPE SAFETY ---
 const ROLES = ["Admin", "Manager", "Employee"] as const;
@@ -141,14 +137,14 @@ export default function StaffPage() {
   // 1. Fetch Staff Data
   const { data: staffList, isLoading } = api.staff.getAll.useQuery();
 
-  const filteredStaff = staffList?.filter((staff) => {
-    const query = searchQuery.toLowerCase();
-    return (
-      staff.name.includes(query) ||
-      staff.status?.toLowerCase().includes(query) ||
-      staff.email.toLowerCase().includes(query)
-    );
-  });
+  // const filteredStaff = staffList?.filter((staff) => {
+  //   const query = searchQuery.toLowerCase();
+  //   return (
+  //     staff.name.includes(query) ??
+  //     staff.status?.toLowerCase().includes(query) ??
+  //     staff.email.toLowerCase().includes(query)
+  //   );
+  // });
 
   // 2. Setup Form with Explicit Type
   const form = useForm<StaffFormValues>({
@@ -239,9 +235,6 @@ export default function StaffPage() {
   };
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
         <main className="space-y-6 p-6">
           <section className={"flex flex-row gap-6"}>
             <SidebarTrigger />
@@ -544,7 +537,5 @@ export default function StaffPage() {
             </Table>
           </div>
         </main>
-      </SidebarInset>
-    </SidebarProvider>
   );
 }
