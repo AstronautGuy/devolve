@@ -21,7 +21,7 @@ export function TaskAlert() {
   const router = useRouter();
 
   // Fetch the pending task
-  const { data: task, isLoading } = api.task.getPending.useQuery();
+  const { data: task, isLoading } = api.tasks.getPending.useQuery();
 
   // Ref to track which task ID we have already alerted for
   const lastToastedId = useRef<string | null>(null);

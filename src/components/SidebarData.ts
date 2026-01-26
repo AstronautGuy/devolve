@@ -21,6 +21,7 @@ export function useSidebarData() {
       email: user?.primaryEmailAddress?.emailAddress ?? "",
       avatar: user?.imageUrl ?? "",
     },
+    isLoading: !user || !organization,
     teams: organization
       ? [
           {

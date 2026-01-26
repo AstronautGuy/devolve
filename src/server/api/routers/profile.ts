@@ -6,9 +6,11 @@ import { eq, and } from "drizzle-orm";
 export const profileRouter = createTRPCRouter({
   // 1. Get Profile
   get: protectedProcedure.query(async ({ ctx }) => {
-    return ctx.db.query.companyProfiles.findFirst({
+    const profile = await ctx.db.query.companyProfiles.findFirst({
       where: eq(companyProfiles.orgId, ctx.auth.orgId),
     });
+
+    return profile ?? null;
   }),
 
   // 2. Update Profile (Upsert)

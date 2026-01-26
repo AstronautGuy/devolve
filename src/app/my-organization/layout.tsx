@@ -1,28 +1,13 @@
 import "~/styles/globals.css";
 
-import { type Metadata } from "next";
-import { Geist } from "next/font/google";
-
-import { TRPCReactProvider } from "~/trpc/react";
-
-import { ClerkProvider } from "@clerk/nextjs";
-import "../../styles/globals.css";
-
-import { Toaster } from "~/components/ui/sonner";
-import { ThemeProvider } from "next-themes";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "~/components/ui/sidebar";
+import { SidebarInset, SidebarProvider } from "~/components/ui/sidebar";
 import { AppSidebar } from "~/components/Sidebar";
-import { Navigation } from "~/components/Navigation";
-
-const geist = Geist({
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
 
 export default function OrgLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
+<<<<<<< Updated upstream
     <ClerkProvider>
       <html lang="en" className={`${geist.variable}`}>
         <body>
@@ -37,5 +22,13 @@ export default function OrgLayout({
         </body>
       </html>
     </ClerkProvider>
+=======
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        {children}
+      </SidebarInset>
+    </SidebarProvider>
+>>>>>>> Stashed changes
   );
 }

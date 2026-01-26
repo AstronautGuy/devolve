@@ -77,7 +77,7 @@ export default function InventoryPage() {
 
   const utils = api.useUtils();
 
-  const { data: products, isLoading } = api.product.getAll.useQuery();
+  const { data: products, isLoading } = api.products.getAll.useQuery();
 
   // Client-side filtering logic
   const filteredProducts = products?.filter((product) => {
@@ -123,29 +123,29 @@ export default function InventoryPage() {
   }, [editingProduct, form]);
 
   // Mutations
-  const createMutation = api.product.create.useMutation({
+  const createMutation = api.products.create.useMutation({
     onSuccess: async () => {
       toast.success("Product Added");
       setIsDialogOpen(false);
-      await utils.product.getAll.invalidate();
+      await utils.products.getAll.invalidate();
     },
     onError: (err) => toast.error(err.message),
   });
 
-  const updateMutation = api.product.update.useMutation({
+  const updateMutation = api.products.update.useMutation({
     onSuccess: async () => {
       toast.success("Product Updated");
       setIsDialogOpen(false);
       setEditingProduct(null);
-      await utils.product.getAll.invalidate();
+      await utils.products.getAll.invalidate();
     },
     onError: (err) => toast.error(err.message),
   });
 
-  const deleteMutation = api.product.delete.useMutation({
+  const deleteMutation = api.products.delete.useMutation({
     onSuccess: async () => {
       toast.success("Product Deleted");
-      await utils.product.getAll.invalidate();
+      await utils.products.getAll.invalidate();
     },
     onError: (err) => toast.error(err.message),
   });
@@ -187,10 +187,7 @@ export default function InventoryPage() {
   };
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <div className="space-y-6 p-6">
+        <main className="space-y-6 p-6">
           <section className={"flex flex-row gap-6"}>
             <SidebarTrigger />
             <Navigation
@@ -441,8 +438,6 @@ export default function InventoryPage() {
               </TableBody>
             </Table>
           </div>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+        </main>
   );
 }

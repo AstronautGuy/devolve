@@ -93,7 +93,7 @@ export default function OnboardingPage() {
       toast.success("Setup Complete!", {
         description: "Your organization profile has been created.",
       });
-      await utils.task.getPending.invalidate();
+      await utils.tasks.getPending.invalidate();
       router.push("/my-organization");
     },
     onError: (error) => {

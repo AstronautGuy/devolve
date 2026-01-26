@@ -72,10 +72,7 @@ export default function QuotationsPage() {
   });
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        <div className="space-y-6 p-6">
+        <main className="space-y-6 p-6">
           <section className={"flex flex-row gap-6"}>
             <SidebarTrigger />
             <Navigation
@@ -203,8 +200,6 @@ export default function QuotationsPage() {
               </TableBody>
             </Table>
           </div>
-        </div>
-      </SidebarInset>
-    </SidebarProvider>
+        </main>
   );
 }

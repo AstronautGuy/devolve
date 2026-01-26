@@ -67,10 +67,10 @@ export default function NewQuotationPage() {
   const { setValue, handleSubmit, watch } = form;
   const values = watch(); // Watch values to display current state in UI if needed
 
-  const createMutation = api.quotation.create.useMutation({
+  const createMutation = api.quotations.create.useMutation({
     onSuccess: async () => {
       toast.success("Quotation Created Successfully");
-      await utils.quotation.getAll.invalidate();
+      await utils.quotations.getAll.invalidate();
       router.push("/my-organization/quotations");
     },
     onError: (err) => toast.error(err.message),
