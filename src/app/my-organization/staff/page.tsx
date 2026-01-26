@@ -137,16 +137,6 @@ export default function StaffPage() {
   // 1. Fetch Staff Data
   const { data: staffList, isLoading } = api.staff.getAll.useQuery();
 
-<<<<<<< Updated upstream
-  // const filteredStaff = staffList?.filter((staff) => {
-  //   const query = searchQuery.toLowerCase();
-  //   return (
-  //     staff.name.includes(query) ??
-  //     staff.status?.toLowerCase().includes(query) ??
-  //     staff.email.toLowerCase().includes(query)
-  //   );
-  // });
-=======
   const filteredStaff = staffList?.filter((staff) => {
     const query = searchQuery.toLowerCase();
     return (
@@ -155,7 +145,6 @@ export default function StaffPage() {
       staff.email.toLowerCase().includes(query)
     );
   });
->>>>>>> Stashed changes
 
   // 2. Setup Form with Explicit Type
   const form = useForm<StaffFormValues>({

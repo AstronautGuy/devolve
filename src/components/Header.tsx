@@ -9,6 +9,7 @@ import {
 } from "@clerk/nextjs";
 import Link from "next/link";
 import { TaskAlert } from "~/components/TaskAlert";
+import { ThemeSwitcher } from "~/components/ThemeSwitcher";
 
 export function Header() {
   return (
@@ -34,6 +35,7 @@ export function Header() {
         </Link>
         <UserButton />
       </SignedIn>
+      <ThemeSwitcher/>
     </header>
   );
 }
