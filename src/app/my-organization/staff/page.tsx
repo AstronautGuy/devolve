@@ -47,9 +47,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
-import {
-  SidebarTrigger,
-} from "~/components/ui/sidebar";
+import { SidebarTrigger } from "~/components/ui/sidebar";
 import { Navigation } from "~/components/Navigation";
 import { toast } from "sonner";
 import {
@@ -235,307 +233,301 @@ export default function StaffPage() {
   };
 
   return (
-        <main className="space-y-6 p-6">
-          <section className={"flex flex-row gap-6"}>
-            <SidebarTrigger />
-            <Navigation
-              breadcrumbs={[
-                { label: "Home", href: "/" },
-                { label: "My Organization", href: "/my-organization" },
-                { label: "Inventory" },
-              ]}
-            />
-          </section>
-          {/* HEADER */}
-          <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
-            <div>
-              <h1 className="text-3xl font-bold tracking-tight">
-                Staff Management
-              </h1>
-              <p className="mt-1 text-slate-500">
-                Manage your team members and permissions.
-              </p>
-            </div>
+    <main className="space-y-6 p-6">
+      <section className={"flex flex-row gap-6"}>
+        <SidebarTrigger />
+        <Navigation
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "My Organization", href: "/my-organization" },
+            { label: "Inventory" },
+          ]}
+        />
+      </section>
+      {/* HEADER */}
+      <div className="flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Staff Management
+          </h1>
+          <p className="mt-1 text-slate-500">
+            Manage your team members and permissions.
+          </p>
+        </div>
 
-            <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
-              <DialogTrigger asChild>
-                <Button className="hover:bg-slate-800">
-                  <Plus className="mr-2 h-4 w-4" /> Add Staff
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>
-                    {editingStaff ? "Edit Team Member" : "Add New Team Member"}
-                  </DialogTitle>
-                  <DialogDescription>
-                    {editingStaff
-                      ? "Update details for this employee."
-                      : "Send an invite to a new employee."}
-                  </DialogDescription>
-                </DialogHeader>
+        <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
+          <DialogTrigger asChild>
+            <Button className="hover:bg-slate-800">
+              <Plus className="mr-2 h-4 w-4" /> Add Staff
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>
+                {editingStaff ? "Edit Team Member" : "Add New Team Member"}
+              </DialogTitle>
+              <DialogDescription>
+                {editingStaff
+                  ? "Update details for this employee."
+                  : "Send an invite to a new employee."}
+              </DialogDescription>
+            </DialogHeader>
 
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 py-4"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="name"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="John Doe" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address</FormLabel>
-                          <FormControl>
-                            <Input placeholder="john@company.com" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="role"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Role</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              value={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select role" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="Employee">
-                                  Employee
-                                </SelectItem>
-                                <SelectItem value="Manager">Manager</SelectItem>
-                                <SelectItem value="Admin">Admin</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="status"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Status</FormLabel>
-                            <Select
-                              onValueChange={field.onChange}
-                              value={field.value}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select status" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                <SelectItem value="Active">Active</SelectItem>
-                                <SelectItem value="Inactive">
-                                  Inactive
-                                </SelectItem>
-                                <SelectItem value="On Leave">
-                                  On Leave
-                                </SelectItem>
-                                <SelectItem value="Terminated">
-                                  Terminated
-                                </SelectItem>
-                              </SelectContent>
-                            </Select>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    <FormField
-                      control={form.control}
-                      name="phone"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Phone (Optional)</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="+1 234..."
-                              {...field}
-                              value={field.value ?? ""}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
-                    <div className="flex justify-end pt-4">
-                      <Button
-                        type="submit"
-                        disabled={
-                          createMutation.isPending || updateMutation.isPending
-                        }
-                      >
-                        {createMutation.isPending || updateMutation.isPending
-                          ? "Saving..."
-                          : editingStaff
-                            ? "Update Member"
-                            : "Add Member"}
-                      </Button>
-                    </div>
-                  </form>
-                </Form>
-              </DialogContent>
-            </Dialog>
-          </div>
-
-          {/* SEARCH & FILTER */}
-          <div className="relative max-w-md">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
-            <Input
-              placeholder="Search among your clients..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pr-8 pl-9"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="space-y-4 py-4"
               >
-                <X className="h-3 w-3" />
-              </button>
-            )}
-          </div>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Full Name</FormLabel>
+                      <FormControl>
+                        <Input placeholder="John Doe" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email Address</FormLabel>
+                      <FormControl>
+                        <Input placeholder="john@company.com" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          {/* DATA TABLE */}
-          <div className="rounded-md border shadow-sm">
-            <Table>
-              <TableHeader>
-                <TableRow className="">
-                  <TableHead>Name</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Contact</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="h-24 text-center">
-                      <div className="flex items-center justify-center gap-2 text-slate-500">
-                        <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                        Loading team...
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="role"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Role</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select role" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Employee">Employee</SelectItem>
+                            <SelectItem value="Manager">Manager</SelectItem>
+                            <SelectItem value="Admin">Admin</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="status"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          value={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue placeholder="Select status" />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="Active">Active</SelectItem>
+                            <SelectItem value="Inactive">Inactive</SelectItem>
+                            <SelectItem value="On Leave">On Leave</SelectItem>
+                            <SelectItem value="Terminated">
+                              Terminated
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone (Optional)</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="+1 234..."
+                          {...field}
+                          value={field.value ?? ""}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="flex justify-end pt-4">
+                  <Button
+                    type="submit"
+                    disabled={
+                      createMutation.isPending || updateMutation.isPending
+                    }
+                  >
+                    {createMutation.isPending || updateMutation.isPending
+                      ? "Saving..."
+                      : editingStaff
+                        ? "Update Member"
+                        : "Add Member"}
+                  </Button>
+                </div>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      </div>
+
+      {/* SEARCH & FILTER */}
+      <div className="relative max-w-md">
+        <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <Input
+          placeholder="Search among your clients..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="pr-8 pl-9"
+        />
+        {searchQuery && (
+          <button
+            onClick={() => setSearchQuery("")}
+            className="absolute top-1/2 right-3 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+          >
+            <X className="h-3 w-3" />
+          </button>
+        )}
+      </div>
+
+      {/* DATA TABLE */}
+      <div className="rounded-md border shadow-sm">
+        <Table>
+          <TableHeader>
+            <TableRow className="">
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
+              <TableHead>Contact</TableHead>
+              <TableHead>Status</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  <div className="flex items-center justify-center gap-2 text-slate-500">
+                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                    Loading team...
+                  </div>
+                </TableCell>
+              </TableRow>
+            ) : staffList?.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={5}
+                  className="h-32 text-center text-slate-500"
+                >
+                  No staff members found. Add your first employee!
+                </TableCell>
+              </TableRow>
+            ) : (
+              staffList?.map((staff) => (
+                <TableRow key={staff.id} className="hover:bg-slate-50/50">
+                  <TableCell className="font-medium">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600">
+                        {staff.name.substring(0, 2).toUpperCase()}
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ) : staffList?.length === 0 ? (
-                  <TableRow>
-                    <TableCell
-                      colSpan={5}
-                      className="h-32 text-center text-slate-500"
+                      {staff.name}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge
+                      variant={
+                        staff.role === "Admin"
+                          ? "default"
+                          : staff.role === "Manager"
+                            ? "secondary"
+                            : "outline"
+                      }
                     >
-                      No staff members found. Add your first employee!
-                    </TableCell>
-                  </TableRow>
-                ) : (
-                  staffList?.map((staff) => (
-                    <TableRow key={staff.id} className="hover:bg-slate-50/50">
-                      <TableCell className="font-medium">
-                        <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-600">
-                            {staff.name.substring(0, 2).toUpperCase()}
-                          </div>
-                          {staff.name}
+                      {staff.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex flex-col text-sm text-slate-500">
+                      <div className="flex items-center gap-1">
+                        <Mail className="h-3 w-3" /> {staff.email}
+                      </div>
+                      {staff.phone && (
+                        <div className="mt-0.5 flex items-center gap-1">
+                          <Phone className="h-3 w-3" /> {staff.phone}
                         </div>
-                      </TableCell>
-                      <TableCell>
-                        <Badge
-                          variant={
-                            staff.role === "Admin"
-                              ? "default"
-                              : staff.role === "Manager"
-                                ? "secondary"
-                                : "outline"
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(staff.status ?? "Active")}`}
+                    >
+                      {staff.status ?? "Active"}
+                    </span>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" className="h-8 w-8 p-0">
+                          <MoreVertical className="h-4 w-4 text-slate-400" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        {/* Safe Cast: We know the shape matches */}
+                        <DropdownMenuItem
+                          onClick={() =>
+                            handleEdit(staff as unknown as StaffFormValues)
                           }
                         >
-                          {staff.role}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <div className="flex flex-col text-sm text-slate-500">
-                          <div className="flex items-center gap-1">
-                            <Mail className="h-3 w-3" /> {staff.email}
-                          </div>
-                          {staff.phone && (
-                            <div className="mt-0.5 flex items-center gap-1">
-                              <Phone className="h-3 w-3" /> {staff.phone}
-                            </div>
-                          )}
-                        </div>
-                      </TableCell>
-                      <TableCell>
-                        <span
-                          className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(staff.status ?? "Active")}`}
+                          <Edit className="mr-2 h-4 w-4" /> Edit Details
+                        </DropdownMenuItem>
+                        <DropdownMenuItem className="text-slate-500">
+                          <Shield className="mr-2 h-4 w-4" /> Manage Access
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="text-red-600 focus:text-red-600"
+                          onClick={() =>
+                            deleteMutation.mutate({ id: staff.id })
+                          }
                         >
-                          {staff.status ?? "Active"}
-                        </span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <MoreVertical className="h-4 w-4 text-slate-400" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            {/* Safe Cast: We know the shape matches */}
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleEdit(staff as unknown as StaffFormValues)
-                              }
-                            >
-                              <Edit className="mr-2 h-4 w-4" /> Edit Details
-                            </DropdownMenuItem>
-                            <DropdownMenuItem className="text-slate-500">
-                              <Shield className="mr-2 h-4 w-4" /> Manage Access
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-red-600 focus:text-red-600"
-                              onClick={() =>
-                                deleteMutation.mutate({ id: staff.id })
-                              }
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" /> Remove User
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </main>
+                          <Trash2 className="mr-2 h-4 w-4" /> Remove User
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </main>
   );
 }

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, type LucideIcon } from "lucide-react";
-import "~/styles/globals.css"
+import "~/styles/globals.css";
 
 interface ModuleCardProps {
   title: string;

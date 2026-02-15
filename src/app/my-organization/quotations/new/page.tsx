@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import { Button } from "~/components/ui/button";
 import { useEffect } from "react"; // Assuming you have a Button component
 
-import { incrementInvoiceNumber } from '~/lib/utils';
+import { incrementInvoiceNumber } from "~/lib/utils";
 import { DatePicker } from "~/components/DatePicker";
 import { format } from "date-fns";
 
@@ -88,7 +88,8 @@ export default function NewQuotationPage() {
 
   const settingsMutation = api.settings.update.useMutation();
 
-  const { data: settings, isLoading: isSettingsLoading } = api.settings.get.useQuery();
+  const { data: settings, isLoading: isSettingsLoading } =
+    api.settings.get.useQuery();
 
   useEffect(() => {
     // Only run if we have settings and aren't loading
@@ -101,7 +102,7 @@ export default function NewQuotationPage() {
       // FIX: Remove 'values' from the dependency array to avoid infinite loops
       reset({
         ...getValues(),
-        number: settings.nextQuotationNumber ?? '000',
+        number: settings.nextQuotationNumber ?? "000",
       });
     }
     // Dependencies: Only re-run if settings change or loading finishes.
@@ -136,7 +137,7 @@ export default function NewQuotationPage() {
     const nextNumber = incrementInvoiceNumber(submissionData.number);
     const settingsUpdate = {
       nextQuotationNumber: nextNumber,
-    }
+    };
     settingsMutation.mutate(settingsUpdate);
   };
 

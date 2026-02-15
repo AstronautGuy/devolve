@@ -52,8 +52,8 @@ export async function POST(req: Request) {
 
     await db.insert(settings).values({
       orgId: id,
-      nextQuotationNumber: '001',
-    })
+      nextQuotationNumber: "001",
+    });
 
     // 2. Create Onboarding Task
     await db.insert(tasks).values({

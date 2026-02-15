@@ -12,9 +12,11 @@ export function cn(...inputs: ClassValue[]) {
  * "INV-2025-099" -> "INV-2025-100"
  * "QT/24/05" -> "QT/24/06"
  */
-export const incrementInvoiceNumber = (lastNumber: string | undefined | null): string => {
+export const incrementInvoiceNumber = (
+  lastNumber: string | undefined | null,
+): string => {
   // 1. Handle empty/undefined input
-  if (!lastNumber) return "n111" ;
+  if (!lastNumber) return "n111";
 
   // 2. Use RegExp.exec() instead of string.match() to satisfy ESLint
   // Captures: Group 1 (Prefix), Group 2 (The Number)

@@ -92,94 +92,94 @@ export default function DashboardPage() {
   ];
 
   return (
-        <main className="flex min-h-screen flex-col space-y-6 p-6">
-          <section className={"flex flex-row gap-6"}>
-            <SidebarTrigger />
-            <Navigation
-              breadcrumbs={[
-                { label: "Home", href: "/" },
-                { label: "My Organization" },
-              ]}
+    <main className="flex min-h-screen flex-col space-y-6 p-6">
+      <section className={"flex flex-row gap-6"}>
+        <SidebarTrigger />
+        <Navigation
+          breadcrumbs={[
+            { label: "Home", href: "/" },
+            { label: "My Organization" },
+          ]}
+        />
+      </section>
+      {/* --- HEADER SECTION --- */}
+      <div className="mb-12 flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-start md:justify-between">
+        {/* Left: Org Info */}
+        <div className="flex items-center gap-6">
+          <div className="relative">
+            <img
+              src={organization.imageUrl}
+              alt={organization.name}
+              className="h-20 w-20 rounded-2xl border-2 border-white/10 object-cover shadow-2xl"
             />
-          </section>
-          {/* --- HEADER SECTION --- */}
-          <div className="mb-12 flex flex-col gap-6 border-b border-white/10 pb-8 md:flex-row md:items-start md:justify-between">
-            {/* Left: Org Info */}
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                <img
-                  src={organization.imageUrl}
-                  alt={organization.name}
-                  className="h-20 w-20 rounded-2xl border-2 border-white/10 object-cover shadow-2xl"
-                />
-                {isAdmin && (
-                  <span className="absolute -right-2 -bottom-2 rounded-full bg-yellow-500 px-2 py-0.5 text-[10px] font-bold text-black shadow-lg">
-                    ADMIN
-                  </span>
-                )}
-              </div>
-              <div>
-                <h1 className="text-lg font-medium text-gray-400">
-                  {organization.name}
-                </h1>
-                <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                  Hello, {user.firstName}
-                </h2>
-              </div>
-            </div>
-
-            {/* Right: Actions */}
             {isAdmin && (
-              <Link
-                href="/my-organization/manage"
-                className="group flex items-center gap-3 rounded-xl bg-purple-800 px-5 py-3 font-medium text-white backdrop-blur-sm transition-all hover:scale-105 active:scale-95"
-              >
-                <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
-                <span>Manage Organization</span>
-              </Link>
+              <span className="absolute -right-2 -bottom-2 rounded-full bg-yellow-500 px-2 py-0.5 text-[10px] font-bold text-black shadow-lg">
+                ADMIN
+              </span>
             )}
           </div>
-
-          {/* --- MODULES GRID --- */}
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
-            {modules.map((item) => (
-              <ModuleCard
-                key={item.title}
-                title={item.title}
-                description={item.description}
-                href={item.href}
-                icon={item.icon}
-                iconColorClass={item.color}
-                hoverBorderClass={item.border}
-              />
-            ))}
-
-            {hasCloud && (
-              <ModuleCard
-                title="Cloud Center"
-                description="Check Manage and Renew your Cloud Storage Subscription"
-                href="/my-organization/Cloud"
-                icon={Cloud}
-                // Override styles for the Security Card
-                iconColorClass="bg-purple-500/20 text-purple-400"
-                hoverBorderClass="hover:border-purple-500/40"
-              />
-            )}
-
-            {/* Admin Only Extra Card (Audit Logs, etc) */}
-            {isAdmin && (
-              <ModuleCard
-                title="Security Center"
-                description="View audit logs, manage API keys, and system alerts."
-                href="/my-organization/security"
-                icon={ShieldAlert}
-                // Override styles for the Security Card
-                iconColorClass="bg-red-500/20 text-red-400"
-                hoverBorderClass="hover:border-red-500/40"
-                className="border-red-500/20 bg-red-500/5 hover:bg-red-500/10"
-              />
-            )}
+          <div>
+            <h1 className="text-lg font-medium text-gray-400">
+              {organization.name}
+            </h1>
+            <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              Hello, {user.firstName}
+            </h2>
           </div>
-        </main>
+        </div>
+
+        {/* Right: Actions */}
+        {isAdmin && (
+          <Link
+            href="/my-organization/manage"
+            className="group flex items-center gap-3 rounded-xl bg-purple-800 px-5 py-3 font-medium text-white backdrop-blur-sm transition-all hover:scale-105 active:scale-95"
+          >
+            <Settings className="h-5 w-5 transition-transform group-hover:rotate-90" />
+            <span>Manage Organization</span>
+          </Link>
+        )}
+      </div>
+
+      {/* --- MODULES GRID --- */}
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+        {modules.map((item) => (
+          <ModuleCard
+            key={item.title}
+            title={item.title}
+            description={item.description}
+            href={item.href}
+            icon={item.icon}
+            iconColorClass={item.color}
+            hoverBorderClass={item.border}
+          />
+        ))}
+
+        {hasCloud && (
+          <ModuleCard
+            title="Cloud Center"
+            description="Check Manage and Renew your Cloud Storage Subscription"
+            href="/my-organization/Cloud"
+            icon={Cloud}
+            // Override styles for the Security Card
+            iconColorClass="bg-purple-500/20 text-purple-400"
+            hoverBorderClass="hover:border-purple-500/40"
+          />
+        )}
+
+        {/* Admin Only Extra Card (Audit Logs, etc) */}
+        {isAdmin && (
+          <ModuleCard
+            title="Security Center"
+            description="View audit logs, manage API keys, and system alerts."
+            href="/my-organization/security"
+            icon={ShieldAlert}
+            // Override styles for the Security Card
+            iconColorClass="bg-red-500/20 text-red-400"
+            hoverBorderClass="hover:border-red-500/40"
+            className="border-red-500/20 bg-red-500/5 hover:bg-red-500/10"
+          />
+        )}
+      </div>
+    </main>
   );
 }

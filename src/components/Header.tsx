@@ -35,7 +35,7 @@ export function Header() {
         </Link>
         <UserButton />
       </SignedIn>
-      <ThemeSwitcher/>
+      <ThemeSwitcher />
     </header>
   );
 }
