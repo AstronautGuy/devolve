@@ -29,6 +29,8 @@ import { Button } from "~/components/ui/button";
 import { useEffect } from "react"; // Assuming you have a Button component
 
 import { incrementInvoiceNumber } from '~/lib/utils';
+import { DatePicker } from "~/components/DatePicker";
+import { format } from "date-fns";
 
 // 1. Adjusted Schema to accept strings for dates (since you use text inputs like "Today")
 const quotationSchema = z.object({
@@ -246,22 +248,28 @@ export default function NewQuotationPage() {
               {/* Quotation Date */}
               <div className="grid grid-cols-[180px_1fr] items-start gap-6 pl-20">
                 <div className="p-2 text-sm font-light">Quotation Date</div>
-                <InlineEdit
-                  defaultValue={values.date}
-                  pencilIcon={false}
-                  className="border-foreground/40 text-sm font-light"
-                  onSave={(val) => handleFieldChange("date", val)}
+                <DatePicker
+                  value={values.date ? new Date(values.date) : undefined}
+                  onChange={(date) =>
+                    handleFieldChange(
+                      "date",
+                      date ? format(date, "yyyy-MM-dd") : "",
+                    )
+                  }
                 />
               </div>
 
               {/* Due Date */}
               <div className="grid grid-cols-[180px_1fr] items-start gap-6 pl-20">
                 <div className="p-2 text-sm font-light">Due Date</div>
-                <InlineEdit
-                  defaultValue={values.dueDate}
-                  pencilIcon={false}
-                  className="border-foreground/40 text-sm font-light"
-                  onSave={(val) => handleFieldChange("dueDate", val)}
+                <DatePicker
+                  value={values.dueDate ? new Date(values.dueDate) : undefined}
+                  onChange={(dueDate) =>
+                    handleFieldChange(
+                      "dueDate",
+                      dueDate ? format(dueDate, "yyyy-MM-dd") : "",
+                    )
+                  }
                 />
               </div>
             </div>
