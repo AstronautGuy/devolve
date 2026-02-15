@@ -2,7 +2,6 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { quotations, settings } from "~/server/db/schema";
 import { eq, and, desc } from "drizzle-orm"; // Import 'and' for security
-import { generateNextId } from "~/lib/utils";
 
 export const quotationsRouter = createTRPCRouter({
   getAll: protectedProcedure.query(async ({ ctx }) => {

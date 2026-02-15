@@ -179,7 +179,7 @@ export const quotations = createTable(
         onDelete: "cascade",
       }),
 
-    number: text("quotation_number").notNull(),
+    number: text("quotation_number").notNull().unique(),
     title: varchar("quotation_title", { length: 256 })
       .default("Quotation")
       .notNull(),

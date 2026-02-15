@@ -25,7 +25,10 @@ import {
 } from "~/components/ui/select";
 import { ChevronDownIcon, PencilIcon, Save, Loader2 } from "lucide-react"; // Added Icons
 import { toast } from "sonner";
-import { Button } from "~/components/ui/button"; // Assuming you have a Button component
+import { Button } from "~/components/ui/button";
+import { useEffect } from "react"; // Assuming you have a Button component
+
+import { incrementInvoiceNumber } from '~/lib/utils';
 
 // 1. Adjusted Schema to accept strings for dates (since you use text inputs like "Today")
 const quotationSchema = z.object({
@@ -64,7 +67,7 @@ export default function NewQuotationPage() {
     },
   });
 
-  const { setValue, handleSubmit, watch } = form;
+  const { setValue, handleSubmit, watch, reset, getValues } = form;
   const values = watch(); // Watch values to display current state in UI if needed
 
   const createMutation = api.quotations.create.useMutation({
@@ -72,9 +75,36 @@ export default function NewQuotationPage() {
       toast.success("Quotation Created Successfully");
       await utils.quotations.getAll.invalidate();
       router.push("/my-organization/quotations");
+
+      await Promise.all([
+        utils.quotations.getAll.invalidate(),
+        utils.settings.get.invalidate(),
+      ]);
     },
     onError: (err) => toast.error(err.message),
   });
+
+  const settingsMutation = api.settings.update.useMutation();
+
+  const { data: settings, isLoading: isSettingsLoading } = api.settings.get.useQuery();
+
+  useEffect(() => {
+    // Only run if we have settings and aren't loading
+    if (settings && !isSettingsLoading) {
+      // A. Calculate next number
+      // Ensure we handle potential null/undefined safely
+
+      // B. Update Form
+      // FIX: Use 'getValues()' to get current data, not 'setValue()'
+      // FIX: Remove 'values' from the dependency array to avoid infinite loops
+      reset({
+        ...getValues(),
+        number: settings.nextQuotationNumber ?? '000',
+      });
+    }
+    // Dependencies: Only re-run if settings change or loading finishes.
+    // DO NOT include 'values' or 'getValues' here.
+  }, [settings, isSettingsLoading, reset, getValues]);
 
   const onSubmit = (values: QuotationFormValues) => {
     // Helper function to parse your UI strings into Dates
@@ -100,6 +130,12 @@ export default function NewQuotationPage() {
 
     // Now .mutate will receive the correct Date types
     createMutation.mutate(submissionData);
+
+    const nextNumber = incrementInvoiceNumber(submissionData.number);
+    const settingsUpdate = {
+      nextQuotationNumber: nextNumber,
+    }
+    settingsMutation.mutate(settingsUpdate);
   };
 
   // Helper to handle InlineEdit saves cleanly
@@ -132,8 +168,23 @@ export default function NewQuotationPage() {
             </div>
             {/* 3. Added Save Button */}
             <div className="flex gap-2">
+              {/*<Button*/}
+              {/*  onClick={handleSubmit(onSubmit)}*/}
+              {/*  disabled={createMutation.isPending}*/}
+              {/*>*/}
+              {/*  {createMutation.isPending ? (*/}
+              {/*    <Loader2 className="mr-2 h-4 w-4 animate-spin" />*/}
+              {/*  ) : (*/}
+              {/*    <Save className="mr-2 h-4 w-4" />*/}
+              {/*  )}*/}
+              {/*  Save Quotation*/}
+              {/*</Button>*/}
+
               <Button
-                onClick={handleSubmit(onSubmit)}
+                // CHANGE THIS: Add the second argument (onError) to see why it fails
+                onClick={handleSubmit(onSubmit, (errors) =>
+                  console.log("FORM ERRORS:", errors),
+                )}
                 disabled={createMutation.isPending}
               >
                 {createMutation.isPending ? (
@@ -174,14 +225,20 @@ export default function NewQuotationPage() {
                   Quote No.
                 </div>
                 <div className="flex flex-col">
-                  <InlineEdit
-                    defaultValue={values.number}
-                    pencilIcon={false}
-                    className="border-foreground/40 text-sm font-light"
-                    onSave={(val) => handleFieldChange("number", val)}
-                  />
+                  {isSettingsLoading ? (
+                    <div className="text-muted-foreground flex items-center gap-2 p-2 text-sm">
+                      <Loader2 className="h-3 w-3 animate-spin" /> Loading...
+                    </div>
+                  ) : (
+                    <InlineEdit
+                      defaultValue={settings?.nextQuotationNumber}
+                      pencilIcon={false}
+                      className="border-foreground/40 text-sm font-light"
+                      onSave={(val) => handleFieldChange("number", val)}
+                    />
+                  )}
                   <p className="text-foreground/50 mt-1 text-xs">
-                    Last Quote No. INV-2025-3001
+                    Auto-generated from Settings
                   </p>
                 </div>
               </div>

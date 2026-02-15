@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, type LucideIcon } from "lucide-react";
+import "~/styles/globals.css"
 
 interface ModuleCardProps {
   title: string;
@@ -22,7 +23,7 @@ export function ModuleCard({
   iconColorClass,
   hoverBorderClass = "",
   // Default dark theme styles, can be overridden
-  className = "border-white/5 bg-white/5 hover:bg-white/10",
+  className = "",
 }: ModuleCardProps) {
   return (
     <Link

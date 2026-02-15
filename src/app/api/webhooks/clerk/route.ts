@@ -1,8 +1,8 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
-import { type WebhookEvent } from "@clerk/nextjs/server";
+import { auth, type WebhookEvent } from "@clerk/nextjs/server";
 import { db } from "~/server/db";
-import { organizations, tasks } from "~/server/db/schema"; // <--- Added companyProfiles
+import { organizations, settings, tasks } from "~/server/db/schema"; // <--- Added companyProfiles
 import { eq } from "drizzle-orm";
 import { env } from "~/env";
 
@@ -49,6 +49,11 @@ export async function POST(req: Request) {
       id: id,
       name: name,
     });
+
+    await db.insert(settings).values({
+      orgId: id,
+      nextQuotationNumber: '001',
+    })
 
     // 2. Create Onboarding Task
     await db.insert(tasks).values({
