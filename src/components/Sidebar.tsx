@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-
 import { SidebarNav } from "~/components/SidebarNav";
 import { NavUser } from "~/components/NavUser";
 import {
@@ -10,22 +9,19 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
+  useSidebar, // <--- Import this hook
 } from "~/components/ui/sidebar";
 import { useSidebarData } from "~/components/SidebarData";
 import { OrganizationSwitcher } from "@clerk/nextjs";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  // 1. Destructure isLoading if your hook exposes it (recommended)
-  // OR check if data.teams is missing
-  const { teams, navMain, user, isLoading } = useSidebarData();
+  const { navMain, user, isLoading } = useSidebarData();
+  const { state } = useSidebar(); // <--- Get current sidebar state
 
-  // 2. Prevent rendering empty headers during fetch
-  // You can also return a Skeleton here if you prefer
-  if (isLoading || !teams) {
+  if (isLoading) {
     return (
       <Sidebar collapsible="icon" {...props}>
         <SidebarHeader>
-          {/* Render a skeleton or empty div to prevent layout shift */}
           <div className="bg-sidebar-accent/50 h-12 w-full animate-pulse rounded-md" />
         </SidebarHeader>
         <SidebarContent />
@@ -37,14 +33,51 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <OrganizationSwitcher/>
+        {state === "collapsed" ? (
+          // COLLAPSED STATE: Show only the Org Logo (Icon)
+          <div className="flex w-full items-center justify-center py-2">
+            <OrganizationSwitcher
+              hidePersonal={true}
+              appearance={{
+                elements: {
+                  rootBox: "flex justify-center items-center w-full",
+                  organizationSwitcherTrigger:
+                    "p-0 w-8 h-8 flex justify-center", // Force square icon
+                  organizationPreviewMainIdentifier: "hidden", // Hide Text
+                  organizationPreviewSecondaryIdentifier: "hidden", // Hide Text
+                  organizationSwitcherTriggerIcon: "hidden", // Hide Chevron
+                },
+              }}
+            />
+          </div>
+        ) : (
+          // EXPANDED STATE: Show Full Switcher with your theme styles
+          <OrganizationSwitcher
+            hidePersonal={true}
+            appearance={{
+              elements: {
+                rootBox: "flex w-full",
+                organizationSwitcherTrigger:
+                  "flex w-full items-center justify-between rounded-md p-2 text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus:bg-sidebar-accent focus:text-sidebar-accent-foreground",
+                organizationPreviewMainIdentifier:
+                  "text-sidebar-foreground font-medium",
+                organizationPreviewSecondaryIdentifier:
+                  "text-sidebar-foreground/60 text-xs",
+                organizationSwitcherTriggerIcon: "text-sidebar-foreground/50",
+              },
+            }}
+          />
+        )}
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarNav items={navMain} />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser user={user} />
       </SidebarFooter>
+
       <SidebarRail />
     </Sidebar>
   );
